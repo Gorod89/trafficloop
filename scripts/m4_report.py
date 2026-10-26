@@ -12,7 +12,7 @@ restricts E1 and E3 to the reference models of the main campaign (``MODELS`` of
 ``models=all`` takes every finished run. Writes ``REPORT.md``, ``e1_ratios.csv``,
 ``e2_paired.csv``, ``e2_unpaired.csv``, ``e3_rankings.csv``, ``e3_kendall.csv`` (with the
 spacing-against-speed rows), ``e3_composite_variants.csv``, ``e3_composite_sensitivity.csv``,
-``e3_pareto.csv``, ``e4_transfer.csv``, ``e1_horizons.csv`` and ``e1_horizon_taus.csv`` (E1b), ``e3_human_reference.csv``, ``e3_human_taus.csv`` and ``e3_human_top3.csv`` (E3d).
+``e3_pareto.csv``, ``e4_transfer.csv``, ``e1_horizons.csv`` and ``e1_horizon_taus.csv`` (E1b), ``e3_human_reference.csv``, ``e3_human_taus.csv`` and ``e3_human_top3.csv`` (E3d), ``e3_within_family.csv`` (E3e).
 """
 
 from __future__ import annotations
@@ -27,6 +27,7 @@ import pandas as pd
 from trafficloop.experiments import analysis as an
 from trafficloop.experiments import horizons as hz
 from trafficloop.experiments import human_reference as hr
+from trafficloop.experiments import within_family as wf
 from trafficloop.utils import REPO_ROOT, resolve_path
 
 
@@ -536,6 +537,19 @@ def section_e3d(root: Path, labels_of=None) -> tuple[str, pd.DataFrame, pd.DataF
     return text, frame, taus, top
 
 
+def section_e3e(e3: pd.DataFrame) -> tuple[str, pd.DataFrame]:
+    text = ("\n## E3e: rank agreement inside the model families\n\n"
+            "Kendall's tau-b between the P0 ranking and the composite, the P3 unstable fraction and the whole-event P1 "
+            "spacing error over all entries, inside the learned entries (`network`) and inside the mechanistic entries, per "
+            "dataset; point estimates with the two-sided p-value of scipy's kendalltau (the mechanistic family has six "
+            "entries, so no bootstrap interval is given). The anti-correlation of E3 is partly between the two families, "
+            "whose one-step and traffic-level merits are opposite, and partly inside the learned family.\n")
+    frame = wf.within_family_taus(e3) if len(e3) else pd.DataFrame(columns=wf.COLUMNS)
+    if frame.empty:
+        return text + "\nNot available.\n", frame
+    return text + "\n" + table(frame), frame
+
+
 def section_e4(root: Path, n_boot: int, seed: int) -> tuple[str, pd.DataFrame]:
     text = ("\n## E4: transfer (P5)\n\n"
             "Relative degradation `rmse_s(A -> B) / rmse_s(B -> B)` of P1 for every label (rows: model and training "
@@ -594,13 +608,14 @@ def main(argv: list[str] | None = None) -> Path:
     e3b_text, e3v, e3s, e3p = section_e3b(root, cache, n_boot, seed)
     e3c_text, e3c = section_e3c(root)
     e3d_text, e3d, e3dt, e3dtop = section_e3d(root, labels_of)
+    e3e_text, e3e = section_e3e(e3)
     e4_text, e4 = section_e4(root, n_boot, seed)
     out.mkdir(parents=True, exist_ok=True)
-    (out / "REPORT.md").write_text(text + campaigns + e1_text + e1b_text + e2_text + e3_text + e3b_text + e3c_text + e3d_text + e4_text, encoding="utf-8")
+    (out / "REPORT.md").write_text(text + campaigns + e1_text + e1b_text + e2_text + e3_text + e3b_text + e3c_text + e3d_text + e3e_text + e4_text, encoding="utf-8")
     for name, frame in (("e1_ratios", e1), ("e1_horizons", e1b), ("e1_horizon_taus", e1bt), ("e2_paired", e2), ("e2_unpaired", e2u), ("e3_rankings", e3), ("e3_kendall", e3k),
                         ("e3_composite_variants", e3v), ("e3_composite_sensitivity", e3s), ("e3_pareto", e3p),
                         ("e3_ablations", e3c), ("e3_human_reference", e3d), ("e3_human_taus", e3dt),
-                        ("e3_human_top3", e3dtop), ("e4_transfer", e4)):
+                        ("e3_human_top3", e3dtop), ("e3_within_family", e3e), ("e4_transfer", e4)):
         frame.to_csv(out / f"{name}.csv", index=False)
     print(f"report written to {out / 'REPORT.md'} ({time.time() - started:.0f} s): E1 {len(e1)} rows, E2 {len(e2)} paired and "
           f"{len(e2u)} unpaired rows, E3 {len(e3)} models and {len(e3k)} taus, E3b {len(e3s)} sensitivity rows, E4 {len(e4)} entries",

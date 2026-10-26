@@ -2257,6 +2257,67 @@ P2 scores the platoons against recorded followers behind the OpenACC leaders (17
 | waymo_hu | v2 | gipps | idm | residual_idm_certified |
 | waymo_hu | v2h | gipps | idm | residual_idm_certified |
 
+## E3e: rank agreement inside the model families
+
+Kendall's tau-b between the P0 ranking and the composite, the P3 unstable fraction and the whole-event P1 spacing error over all entries, inside the learned entries (`network`) and inside the mechanistic entries, per dataset; point estimates with the two-sided p-value of scipy's kendalltau (the mechanistic family has six entries, so no bootstrap interval is given). The anti-correlation of E3 is partly between the two families, whose one-step and traffic-level merits are opposite, and partly inside the learned family.
+
+| dataset | group | n_models | against | tau | p |
+|---|---|---|---|---|---|
+| follownet_highd | all | 25 | composite | -0.530 | <0.001 |
+| follownet_highd | all | 21 | unstable fraction | -0.519 | 0.004 |
+| follownet_highd | all | 25 | P1 whole | 0.500 | <0.001 |
+| follownet_highd | network | 17 | composite | -0.548 | 0.002 |
+| follownet_highd | network | 15 | unstable fraction | -0.484 | 0.027 |
+| follownet_highd | network | 17 | P1 whole | 0.441 | 0.013 |
+| follownet_highd | mechanistic | 6 | composite | 0.138 | 0.702 |
+| follownet_highd | mechanistic | 6 | unstable fraction | -0.545 | 0.150 |
+| follownet_highd | mechanistic | 6 | P1 whole | 0.467 | 0.272 |
+| follownet_ngsim | all | 25 | composite | -0.409 | 0.004 |
+| follownet_ngsim | all | 22 | unstable fraction | -0.605 | <0.001 |
+| follownet_ngsim | all | 25 | P1 whole | -0.160 | 0.275 |
+| follownet_ngsim | network | 17 | composite | -0.244 | 0.174 |
+| follownet_ngsim | network | 16 | unstable fraction | -0.335 | 0.090 |
+| follownet_ngsim | network | 17 | P1 whole | -0.088 | 0.655 |
+| follownet_ngsim | mechanistic | 6 | composite | 0.138 | 0.702 |
+| follownet_ngsim | mechanistic | 6 | unstable fraction | -0.577 | 0.143 |
+| follownet_ngsim | mechanistic | 6 | P1 whole | 0.467 | 0.272 |
+| ngsim | all | 25 | composite | -0.524 | <0.001 |
+| ngsim | all | 22 | unstable fraction | -0.556 | <0.001 |
+| ngsim | all | 25 | P1 whole | -0.313 | 0.029 |
+| ngsim | network | 17 | composite | -0.353 | 0.052 |
+| ngsim | network | 16 | unstable fraction | -0.319 | 0.110 |
+| ngsim | network | 17 | P1 whole | -0.206 | 0.271 |
+| ngsim | mechanistic | 6 | composite | -0.200 | 0.719 |
+| ngsim | mechanistic | 6 | unstable fraction | -0.430 | 0.260 |
+| ngsim | mechanistic | 6 | P1 whole | 0.333 | 0.469 |
+| openacc | all | 25 | composite | -0.544 | <0.001 |
+| openacc | all | 22 | unstable fraction | -0.584 | <0.001 |
+| openacc | all | 25 | P1 whole | -0.227 | 0.118 |
+| openacc | network | 17 | composite | -0.459 | 0.011 |
+| openacc | network | 16 | unstable fraction | -0.483 | 0.026 |
+| openacc | network | 17 | P1 whole | -0.221 | 0.236 |
+| openacc | mechanistic | 6 | composite | 0.200 | 0.719 |
+| openacc | mechanistic | 6 | unstable fraction | -0.501 | 0.173 |
+| openacc | mechanistic | 6 | P1 whole | 0.200 | 0.719 |
+| tgsim | all | 25 | composite | -0.640 | <0.001 |
+| tgsim | all | 22 | unstable fraction | -0.576 | <0.001 |
+| tgsim | all | 25 | P1 whole | -0.400 | 0.005 |
+| tgsim | network | 17 | composite | -0.563 | 0.002 |
+| tgsim | network | 16 | unstable fraction | -0.331 | 0.099 |
+| tgsim | network | 17 | P1 whole | -0.368 | 0.042 |
+| tgsim | mechanistic | 6 | composite | -0.467 | 0.272 |
+| tgsim | mechanistic | 6 | unstable fraction | -0.447 | 0.227 |
+| tgsim | mechanistic | 6 | P1 whole | 0.200 | 0.719 |
+| waymo_hu | all | 25 | composite | -0.456 | 0.001 |
+| waymo_hu | all | 22 | unstable fraction | -0.687 | <0.001 |
+| waymo_hu | all | 25 | P1 whole | 0.093 | 0.532 |
+| waymo_hu | network | 17 | composite | -0.275 | 0.127 |
+| waymo_hu | network | 16 | unstable fraction | -0.499 | 0.019 |
+| waymo_hu | network | 17 | P1 whole | 0.074 | 0.715 |
+| waymo_hu | mechanistic | 6 | composite | 0.067 | 1.000 |
+| waymo_hu | mechanistic | 6 | unstable fraction | -0.577 | 0.143 |
+| waymo_hu | mechanistic | 6 | P1 whole | 0.467 | 0.272 |
+
 ## E4: transfer (P5)
 
 Relative degradation `rmse_s(A -> B) / rmse_s(B -> B)` of P1 for every label (rows: model and training dataset A, columns: test dataset B; 1 = no loss); intervals from 1000 driver replicates over the test drivers of B (one draw per target, common to both tables), shown as `[low, high]` where the per-window tables of both evaluations exist.

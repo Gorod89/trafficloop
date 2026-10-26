@@ -104,11 +104,13 @@ only; their events must not be redistributed (`docs/licences.md`).
   runs are under `results/sweeps/models/` and never ranked
 * `results/models/<dataset>/<version>/<split>-fold<k>/<label>/seed<s>/`: one directory per
   run with `train.json` and the protocol summaries `p1.json` ... `p4.json`, `p1s.json` and
-  `p2h.json` (JSON in the repository; the per-event tables, the checkpoints, the
-  FollowNet-highD events, the near-miss episodes, the split files and the OpenACC leader
+  `p2h.json` (JSON in the repository; the per-event tables, the checkpoints, the near-miss episodes, the split files and the OpenACC leader
   profiles `data/scenarios/openacc_profiles.json` are release assets, see the release notes;
   the human platoon profiles `data/scenarios/human_profiles.json` join them in the next
   release)
+  The FollowNet-highD events are not redistributed (the terms of highD forbid derived data):
+  `python scripts/download_data.py follownet --yes` fetches the figshare files of Chen et al. and
+  `python scripts/m1.py dataset=follownet_highd "steps=[build]"` rebuilds both versions locally.
 
 An entry of the leaderboard is one run directory written by `scripts/train.py` and
 `scripts/evaluate.py`; it is admitted only when every protocol file carries the complete

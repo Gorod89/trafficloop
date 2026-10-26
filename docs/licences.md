@@ -13,7 +13,7 @@ accelerations of a follower and its leader, i.e. trajectory data.
 
 | Source | Licence | Licence URL | Access | Raw data: redistribution | Derived events: redistribution | TrafficLoop publishes | Citation |
 |---|---|---|---|---|---|---|---|
-| FollowNet event sets (figshare) | CC0 1.0, on all 26 articles | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | allowed | allowed | events, including the HighD-derived sets (note 1) | Chen et al. 2023 [1], for the HighD sets also [7] |
+| FollowNet event sets (figshare) | CC0 1.0, on all 26 articles | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | allowed | allowed | no events: every set is rebuilt locally from the figshare files (note 1) | Chen et al. 2023 [1], for the HighD sets also [7] |
 | OpenACC (JRC) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download | allowed with credit and changes indicated | allowed with credit and changes indicated | events | Makridis et al. 2021 [2] |
 | NGSIM (data.transportation.gov) | two strings on the portal (note 3) | https://creativecommons.org/licenses/by-sa/4.0/ | open, Socrata API, no account | allowed, ShareAlike | allowed under CC BY-SA 4.0 only | events, as CC BY-SA 4.0 | US DOT FHWA [3] |
 | Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | allowed with credit | allowed with credit (note 2) | events | Hu et al. 2022 [4] |
@@ -27,13 +27,15 @@ accelerations of a follower and its leader, i.e. trajectory data.
 ## Notes
 
 1. **FollowNet.** figshare reports CC0 for every article, but the authors' notebook asks users not
-   to distribute the data without their permission. CC0 is the legal grant; the request is a
-   courtesy that the release notes should honour by pointing to figshare. The HighD and 30 s
-   HighD sets are derived from highD, whose own terms forbid redistribution. TrafficLoop
-   publishes the events it derives from these two figshare sets (decision of 2026-09-28), relying
-   on the CC0 grant of the FollowNet authors, with the CC0 notice and the citations of FollowNet
-   and highD. This does not extend to raw highD: events extracted from the levelXdata files are
-   never published. The upstream terms of the Lyft and Waymo sets were not checked.
+   to distribute the data without their permission, and the HighD and 30 s HighD sets are derived
+   from highD, whose own terms forbid redistributing derived data; a CC0 label cannot grant more
+   than the FollowNet authors hold. TrafficLoop therefore publishes no FollowNet-highD events
+   (decision REL-1, 2026-10-26; the events were removed from the release assets of v0.1.0 to
+   v0.3.0, which until then relied on the CC0 grant). They are rebuilt locally:
+   `python scripts/download_data.py follownet --yes` fetches the figshare files with their check
+   sums and `python scripts/m1.py dataset=follownet_highd "steps=[build]"` rebuilds both versions
+   deterministically; the manifest of the events carries their check sums. Events extracted from
+   raw highD are never published. The upstream terms of the Lyft and Waymo sets were not checked.
 2. **Waymo pairs.** The Mendeley licence text warns that further permission may be needed for
    content of the dataset that belongs to a third party. The pairs are derived from the Waymo Open
    Dataset, whose own terms were not checked: check them before a release. On 2026-09-27

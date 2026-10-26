@@ -69,7 +69,10 @@ error, the unstable fraction and the platoon collisions.
    their speed range); in the TGSIM near-miss episodes the NGSIM networks collide in 8 to
    36 %, against 1.5 to 7 % for IDM and Gipps (NGSIM and HighD) and 3.9 % for the certified
    hybrid.
-4. **Driver leakage inflates little (H5.2, paired design).** Moving half of the events of
+4. **Driver leakage inflates little; H5.2 is not confirmed (paired design).** The plan registered
+   H5.2 as an inflation of at least 15 % of the one-step RMSE of the networks under the event-level
+   split and below 5 % for the IDM; the first condition fails on every dataset (at most 5.4 %), so
+   the hypothesis is not confirmed. Moving half of the events of
    every test driver into the training part changes the one-step error by about 5 % at most
    (NGSIM: MLP 5.4 %, IDM 2.8 %, LSTM 0.1 %; OpenACC, where every probe driver leaks about
    95 events: lstm_loop 5.4 %, networks on average 1.8 %), the 10 s closed-loop error by at
@@ -205,6 +208,7 @@ and the refused entries (none of the 660 run directories) are in `results/leader
 ## Reproduction
 
 ```
+python scripts/download_data.py follownet --yes  # FollowNet figshare files; the highD-derived events are rebuilt, never redistributed
 python scripts/m1.py dataset=<name>            # events, splits, baselines, calibration
 python scripts/build_human_profiles.py         # human platoon windows of p2h (data/scenarios/human_profiles.json)
 python scripts/m2.py dataset=<name>            # reference models

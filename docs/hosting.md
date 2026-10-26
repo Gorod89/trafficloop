@@ -16,8 +16,7 @@ workflow by pull request.
   commit; the page is then served at `https://<org>.github.io/trafficloop/leaderboard/`.
   The workflow in `.github/workflows/leaderboard.yml` rebuilds the page on every push to
   `main` and uploads it as the Pages artefact, so the copy step is automatic.
-* Give the release a DOI through Zenodo (GitHub integration: one click per release); the
-  FollowNet-highD events (`data/events/follownet_highd/`, CC0) and the OpenACC leader
+* Give the release a DOI through Zenodo (GitHub integration: one click per release); the OpenACC leader
   profiles (`data/scenarios/openacc_profiles.json`, CC BY 4.0) and the human platoon windows of P2h
   (`data/scenarios/human_profiles.json`, CC BY-SA 4.0 as a whole: NGSIM chains under ShareAlike, TGSIM
   public domain, AstaZero CC BY 4.0, credited per window in `source`) go into the same Zenodo
