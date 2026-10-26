@@ -22,6 +22,28 @@ obtained with them were made using the Waymo Open Dataset, provided by Waymo LLC
 License Agreement for Non-Commercial Use, available at waymo.com/open/terms, and your access and use of
 such work are governed by the terms and conditions therein.
 
+## Models trained on highD-derived events
+
+The entries trained on the dataset `follownet_highd` (every run under `results/models/follownet_highd/`
+and their checkpoints in `checkpoints.tar.gz`) were trained on car-following events that the FollowNet
+release derived from the highD dataset. The terms of highD (levelxdata.com/highd-dataset) allow derivative
+works only as abstract representations of the dataset, such as trained models that do not include its
+data and do not allow it to be recovered, for non-commercial purposes only, with a reference to the
+dataset. These models are therefore distributed for non-commercial use only (academic research,
+teaching, scientific publication), may not be used to recover the highD data, and any work that uses
+them must cite Krajewski, R., Bock, J., Kloeker, L., Eckstein, L. (2018), The highD Dataset: A Drone
+Dataset of Naturalistic Vehicle Trajectories on German Highways for Validation of Highly Automated
+Driving Systems, IEEE ITSC, doi 10.1109/ITSC.2018.8569552. The MIT licence of the code does not extend to
+these models.
+
+## Models trained on NGSIM-derived events
+
+The entries trained on `ngsim` and on `follownet_ngsim` (the NGSIM I-80 event set of the FollowNet release,
+which carries a CC0 label on figshare but is derived from NGSIM, so NGSIM's terms apply through the
+derivation) and their checkpoints are shared, as far as NGSIM data is concerned, under CC BY-SA 4.0 with
+attribution to the U.S. Department of Transportation, Federal Highway Administration, Next Generation
+Simulation (NGSIM) Vehicle Trajectories and Supporting Data (ITS DataHub).
+
 ## Data that is not redistributed
 
 * highD and the FollowNet-highD events derived from it: the terms of highD forbid redistributing derived
@@ -36,11 +58,13 @@ such work are governed by the terms and conditions therein.
 ## Other sources
 
 * NGSIM (CC BY-SA 4.0): the human platoon windows `human_profiles.json` contain NGSIM chains and are
-  released under CC BY-SA 4.0 as a whole; events and models derived from NGSIM carry the same attribution.
+  released under CC BY-SA 4.0 as a whole; events and models derived from NGSIM, the FollowNet NGSIM I-80 set
+  included, carry the same attribution (section above).
 * OpenACC (CC BY 4.0, European Commission, Joint Research Centre): the leader profiles
   `openacc_profiles.json` and the events derived from the campaigns, with the changes stated in
   `docs/data_layout.md`.
 * TGSIM (United States public domain): the near-miss episodes and the events.
-* FollowNet NGSIM I-80 events (CC0 1.0, Chen et al.): read from the figshare release.
+* FollowNet event sets (Chen et al., CC0 label on figshare): read from the figshare release; the NGSIM I-80
+  set inherits NGSIM's CC BY-SA 4.0 and the HighD sets the terms of highD, as above.
 
 Citations of every source are in `docs/licences.md`.
