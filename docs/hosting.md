@@ -17,7 +17,8 @@ workflow by pull request.
   The workflow in `.github/workflows/leaderboard.yml` rebuilds the page on every push to
   `main` and uploads it as the Pages artefact, so the copy step is automatic.
 * Give the release a DOI through Zenodo (GitHub integration: one click per release); the OpenACC leader
-  profiles (`data/scenarios/openacc_profiles.json`, CC BY 4.0) and the human platoon windows of P2h
+  profiles (`data/scenarios/openacc_profiles.json`, CC BY 4.0), the checkpoints without the kNN entries (with `NOTICE.md` and the Waymo Agreement inside, since the
+  `waymo_hu` models are Distributed WOD Models) and the human platoon windows of P2h
   (`data/scenarios/human_profiles.json`, CC BY-SA 4.0 as a whole: NGSIM chains under ShareAlike, TGSIM
   public domain, AstaZero CC BY 4.0, credited per window in `source`) go into the same Zenodo
   record as data files, which keeps the repository small and the data citable. A copy of

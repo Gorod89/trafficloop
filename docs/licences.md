@@ -16,7 +16,7 @@ accelerations of a follower and its leader, i.e. trajectory data.
 | FollowNet event sets (figshare) | CC0 1.0, on all 26 articles | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | allowed | allowed | no events: every set is rebuilt locally from the figshare files (note 1) | Chen et al. 2023 [1], for the HighD sets also [7] |
 | OpenACC (JRC) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download | allowed with credit and changes indicated | allowed with credit and changes indicated | events | Makridis et al. 2021 [2] |
 | NGSIM (data.transportation.gov) | two strings on the portal (note 3) | https://creativecommons.org/licenses/by-sa/4.0/ | open, Socrata API, no account | allowed, ShareAlike | allowed under CC BY-SA 4.0 only | events, as CC BY-SA 4.0 | US DOT FHWA [3] |
-| Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | allowed with credit | allowed with credit (note 2) | events | Hu et al. 2022 [4] |
+| Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | allowed with credit | allowed with credit (note 2) | models trained on the pairs, as Distributed WOD Models with the notice, the Agreement and the attribution of note 2; no events | Hu et al. 2022 [4] |
 | TGSIM (ITS DataHub) | US public domain | https://www.usa.gov/publicdomain/label/1.0/ | open, Socrata API, no account | allowed | allowed | events | US DOT FHWA [5] |
 | UTE, Ubiquitous Traffic Eyes | none: no licence file; the README asks for a citation | https://github.com/Ruyi-Feng/Ubiquitous-Traffic-Eye | manual: Google Drive or Baidu links | unclear | unclear | code and check sums only | README [6] |
 | highD (levelXdata) | non-commercial use; no redistribution | https://levelxdata.com/highd-dataset/ | by application | forbidden | forbidden | extraction code and event check sums, never the events | Krajewski et al. 2018 [7] |
@@ -38,9 +38,17 @@ accelerations of a follower and its leader, i.e. trajectory data.
    raw highD are never published. The upstream terms of the Lyft and Waymo sets were not checked.
 2. **Waymo pairs.** The Mendeley licence text warns that further permission may be needed for
    content of the dataset that belongs to a third party. The pairs are derived from the Waymo Open
-   Dataset, whose own terms were not checked: check them before a release. On 2026-09-27
-   data.mendeley.com refused python-requests with a browser challenge (HTTP 403). The script
-   then asks for a manual download; it does not work around the challenge.
+   Dataset, whose Dataset License Agreement for Non-Commercial Use (March 2025, waymo.com/open/terms;
+   checked 2026-10-27) counts every work made using the Dataset, models included, as Derivative IP:
+   Section 1 requires an attribution in any Derivative IP, Section 2(c) allows publishing trained
+   models (Distributed WOD Models) for non-commercial distribution only, with a prominent notice that
+   they are released under the Agreement and that downstream use is subject to it, a copy of the
+   Agreement and the attribution, and Section 4 forbids use in vehicles, production systems or for
+   commercial purposes. TrafficLoop complies in `NOTICE.md` (notice and attribution, repeated in the
+   release notes and inside `checkpoints.tar.gz`) and `WAYMO_OPEN_DATASET_LICENSE.txt` (the copy);
+   the `waymo_hu` runs and their checkpoints are distributed under those terms (decision REL-2). On
+   2026-09-27 data.mendeley.com refused python-requests with a browser challenge (HTTP 403). The
+   script then asks for a manual download; it does not work around the challenge.
 3. **NGSIM.** The portal's data set licence reads "Creative Commons Attribution | Share Alike 3.0
    Unported" (`CC_30_BY_SA`, repeated in the catalogue and in DCAT); its Common Core field
    `License` is `https://creativecommons.org/licenses/by-sa/4.0/`. Both are ShareAlike. CC BY-SA
@@ -87,6 +95,11 @@ accelerations of a follower and its leader, i.e. trajectory data.
 - **Credit and changes.** The CC BY and BY-SA sources require stating what was changed. The
   release notes describe the processing: extraction criteria, resampling to 10 Hz and
   reconstruction, with the config hash.
+- **Checkpoints that contain data.** The checkpoint of a kNN entry is a random sample of its
+  training data (normalised states and accelerations with the scaler), so the kNN checkpoints of
+  every dataset are excluded from the release assets (decision REL-2); the entries are rebuilt in
+  seconds with `scripts/train.py dataset=<name> model=knn`. Network weights and calibrated parameters
+  are distributed, those trained on the Waymo pairs under the terms of note 2.
 - **Restricted sources are reproducible, not redistributed.** For highD, exiD, CitySim, UTE
   and pNEUMA the release contains the extraction code, the
   exact configuration, the sha256 of every raw file (from `SOURCES.json`) and the sha256 of every
