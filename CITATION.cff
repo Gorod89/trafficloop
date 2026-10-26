@@ -11,7 +11,11 @@ authors:
   - family-names: Gorodnichev
     given-names: Mikhail
     orcid: "https://orcid.org/0000-0003-1739-9831"
-    affiliation: "Moscow Technical University of Communication and Informatics"
+    affiliation: "Faculty of Information Technology, Moscow Technical University of Communication and Informatics, Moscow, Russia"
+  - family-names: Moseva
+    given-names: Marina
+    orcid: "https://orcid.org/0000-0002-9778-124X"
+    affiliation: "Faculty of Information Technology, Moscow Technical University of Communication and Informatics, Moscow, Russia"
 keywords:
   - car-following
   - benchmark
