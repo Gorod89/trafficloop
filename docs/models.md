@@ -74,7 +74,9 @@ acceleration itself; this is why the one-step error of `mlp` is below that of pe
 ## Certified hybrid (`residual_idm_certified`)
 
 The certified hybrid of the sibling repository cf-stability (`ResidualIDM` with the budget of
-its decision D86), ported to the interface of the benchmark in `trafficloop/models/certified.py`
+its decision D86; M. Gorodnichev and M. Moseva, "String Stability of Learned Car-Following Models:
+Audit, Differentiable Penalties, a Certified Hybrid and Corridor-Level Validation", Mathematics 2026,
+14(22), 4152, https://doi.org/10.3390/math14224152), ported to the interface of the benchmark in `trafficloop/models/certified.py`
 and `trafficloop/stability/certificate.py` (decision M2-8):
 
 ```
