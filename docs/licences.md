@@ -13,10 +13,10 @@ accelerations of a follower and its leader, i.e. trajectory data.
 
 | Source | Licence | Licence URL | Access | Raw data: redistribution | Derived events: redistribution | TrafficLoop publishes | Citation |
 |---|---|---|---|---|---|---|---|
-| FollowNet event sets (figshare) | CC0 1.0 label on all 26 articles; the NGSIM I-80 set inherits NGSIM's CC BY-SA 4.0 and the HighD sets the terms of highD (note 1) | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | allowed | allowed | no events: every set is rebuilt locally from the figshare files (note 1) | Chen et al. 2023 [1], for the HighD sets also [7] |
+| FollowNet event sets (figshare) | CC0 1.0 label on all 26 articles; the NGSIM I-80 set inherits NGSIM's CC BY-SA 4.0 and the HighD sets the terms of highD (note 1) | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | by the label; the upstream terms prevail (note 1) | by the label; the upstream terms prevail (note 1) | no events: every set is rebuilt locally from the figshare files (note 1) | Chen et al. 2023 [1], for the HighD sets also [7] |
 | OpenACC (JRC) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download | allowed with credit and changes indicated | allowed with credit and changes indicated | events | Makridis et al. 2021 [2] |
 | NGSIM (data.transportation.gov) | two strings on the portal (note 3) | https://creativecommons.org/licenses/by-sa/4.0/ | open, Socrata API, no account | allowed, ShareAlike | allowed under CC BY-SA 4.0 only | events, as CC BY-SA 4.0 | US DOT FHWA [3] |
-| Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | allowed with credit | allowed with credit (note 2) | models trained on the pairs, as Distributed WOD Models with the notice, the Agreement and the attribution of note 2; no events | Hu et al. 2022 [4] |
+| Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | by the label, with credit; under the Waymo agreement only to registered users (note 2) | as for the raw data (note 2) | models trained on the pairs, as Distributed WOD Models with the notice, the Agreement and the attribution of note 2; no events | Hu et al. 2022 [4] |
 | TGSIM (ITS DataHub) | US public domain | https://www.usa.gov/publicdomain/label/1.0/ | open, Socrata API, no account | allowed | allowed | events | US DOT FHWA [5] |
 | UTE, Ubiquitous Traffic Eyes | none: no licence file; the README asks for a citation | https://github.com/Ruyi-Feng/Ubiquitous-Traffic-Eye | manual: Google Drive or Baidu links | unclear | unclear | code and check sums only | README [6] |
 | highD (levelXdata) | non-commercial use; no redistribution | https://levelxdata.com/highd-dataset/ | by application | forbidden | forbidden | extraction code, event check sums and trained models as abstract representations (non-commercial use, citation of Krajewski et al.; `NOTICE.md`), never the events | Krajewski et al. 2018 [7] |
@@ -39,13 +39,16 @@ accelerations of a follower and its leader, i.e. trajectory data.
    representations in the sense of the highD terms and are distributed for non-commercial use with
    the citation of highD (`NOTICE.md`, decision REL-3). The NGSIM I-80 set is derived from NGSIM: its
    CC0 label does not remove NGSIM's ShareAlike, so the events, the models trained on them and the
-   results carry the NGSIM attribution and CC BY-SA 4.0 (note 3). The upstream terms of the Lyft and
-   Waymo sets were not checked.
+   results carry the NGSIM attribution and CC BY-SA 4.0 (note 3). FollowNet's Waymo set falls under
+   the Waymo agreement of note 2; the upstream terms of the Lyft and SPMD sets were not checked.
 2. **Waymo pairs.** The Mendeley licence text warns that further permission may be needed for
    content of the dataset that belongs to a third party. The pairs are derived from the Waymo Open
    Dataset, whose Dataset License Agreement for Non-Commercial Use (March 2025, waymo.com/open/terms;
    checked 2026-10-27) counts every work made using the Dataset, models included, as Derivative IP:
-   Section 1 requires an attribution in any Derivative IP, Section 2(c) allows publishing trained
+   Section 1 requires an attribution in any Derivative IP, Section 2(b) allows distributing the
+   Dataset and modifications of it only to those who registered at waymo.com/open and agreed to its
+   terms (so neither the pairs nor events derived from them are redistributed here, whatever the
+   CC BY 4.0 label of the Mendeley record says), Section 2(c) allows publishing trained
    models (Distributed WOD Models) for non-commercial distribution only, with a prominent notice that
    they are released under the Agreement and that downstream use is subject to it, a copy of the
    Agreement and the attribution, and Section 4 forbids use in vehicles, production systems or for

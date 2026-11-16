@@ -28,10 +28,10 @@
 
 follownet:
   title: "FollowNet: A Comprehensive Benchmark for Car-Following Behavior Modeling (event sets)"
-  licence: CC0 1.0
+  licence: CC0 1.0 label; upstream terms apply
   licence_url: https://creativecommons.org/publicdomain/zero/1.0/
   access: open
-  redistribution: allowed
+  redistribution: unclear
   citation: >-
     Chen, X., Zhu, M., Chen, K. et al. FollowNet: A Comprehensive Benchmark for Car-Following
     Behavior Modeling. Sci Data 10, 828 (2023). https://doi.org/10.1038/s41597-023-02718-7.
@@ -41,8 +41,8 @@ follownet:
   kind: files
   target: follownet
   notes:
-    - All 26 figshare articles are CC0, but a note in the authors' notebook asks users not to distribute the data without permission.
-    - The HighD and 30 s HighD sets are derived from highD, whose own terms forbid redistribution (docs/licences.md).
+    - "All 26 figshare articles carry a CC0 label, and a note in the authors' notebook asks users not to distribute the data without permission. The label does not override the terms of the sources the sets are derived from. The HighD and 30 s HighD sets come from highD (no redistribution of the dataset or of modified versions), the NGSIM I-80 set from NGSIM (ShareAlike), the Waymo set from the Waymo Open Dataset (distribution to registered users only); the upstream terms of the Lyft and SPMD sets were not checked (docs/licences.md note 1)."
+    - "TrafficLoop redistributes none of these sets; they are read from figshare."
   # subset tags: highd, highd_30s, lyft, ngsim_i80, spmd1, spmd2, waymo; event_set, train, val, test
   # (an event_set holds the events of train + val + test). Lyft and highd_30s have no event_set.
   files:
@@ -295,10 +295,10 @@ ngsim:
 
 waymo_hu:
   title: Car-following pairs extracted from the Waymo Open Dataset (Hu et al.), Mendeley Data version 3
-  licence: CC BY 4.0
+  licence: CC BY 4.0 label; Waymo agreement applies
   licence_url: https://creativecommons.org/licenses/by/4.0/
   access: open
-  redistribution: allowed
+  redistribution: unclear
   citation: >-
     Hu, X., Zheng, Z., Chen, D., Zhang, X., Sun, J. (2022). Processing, assessing, and
     enhancing the Waymo autonomous vehicle open dataset for driving behavior research.
@@ -311,7 +311,8 @@ waymo_hu:
   notes:
     - Version 3 (2023-06-16) supersedes version 2 (negative speeds fixed). cf-stability holds the version 2 trajectory file under the same name; sizes and sha256 tell them apart.
     - On 2026-09-27 data.mendeley.com answered python-requests with a browser challenge (HTTP 403). If that happens, download the files by hand from the landing page into the target directory.
-    - The pairs are derived from the Waymo Open Dataset, whose own licence terms were not checked.
+    - "The Mendeley record carries a CC BY 4.0 label, but the pairs are derived from the Waymo Open Dataset, whose Dataset License Agreement for Non-Commercial Use (March 2025, waymo.com/open/terms, checked 2026-10-27) applies through the derivation. Non-commercial use only; the Dataset and modifications of it may be distributed only to users registered at waymo.com/open; trained models may be published with the notice, the attribution and a copy of the Agreement (NOTICE.md, docs/licences.md note 2)."
+    - "TrafficLoop redistributes neither the pairs nor events derived from them."
   # sha256 from the Mendeley API; for the four "records" files cf-stability computed the same
   # values after downloading them. subset tags: cf (trajectories), records (pairs, ids, code)
   files:

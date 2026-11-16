@@ -57,7 +57,8 @@ Legend of the marks:
 
 ### A.1 FollowNet event sets
 
-Figshare collection 10.6084/m9.figshare.c.6777810, CC0 [file, range]. On disk: the HighD, NGSIM
+Figshare collection 10.6084/m9.figshare.c.6777810, CC0 label [file, range] (the terms of the sources the sets are
+derived from still apply: `docs/licences.md`, note 1). On disk: the HighD, NGSIM
 and Waymo event sets [file].
 
 #### A.1.1 Files, shapes and dtypes

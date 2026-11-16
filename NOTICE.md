@@ -51,13 +51,17 @@ Simulation (NGSIM) Vehicle Trajectories and Supporting Data (ITS DataHub).
   events are rebuilt locally from the figshare files of the FollowNet release
   (`python scripts/download_data.py follownet --yes`, then
   `python scripts/m1.py dataset=follownet_highd "steps=[build]"`).
+* Waymo car-following pairs (Hu et al.) and events derived from them: the Waymo agreement allows distributing
+  the Dataset and modifications of it only to users registered at waymo.com/open, so none are in the
+  repository or in the release assets; the result tables hold scores only.
 * kNN entries: the checkpoint of a kNN entry is a random sample of its training data, so no kNN
   checkpoint is in the release assets, for any dataset. The entries are rebuilt in seconds with
   `python scripts/train.py dataset=<name> model=knn` and reproduce their published scores.
 
 ## Other sources
 
-* NGSIM (CC BY-SA 4.0): the human platoon windows `human_profiles.json` contain NGSIM chains and are
+* NGSIM (CC BY-SA 3.0 Unported on data.transportation.gov; material derived from it is shared here under
+  CC BY-SA 4.0, a later version of the same licence, as its ShareAlike clause permits): the human platoon windows `human_profiles.json` contain NGSIM chains and are
   released under CC BY-SA 4.0 as a whole; events and models derived from NGSIM, the FollowNet NGSIM I-80 set
   included, carry the same attribution (section above).
 * OpenACC (CC BY 4.0, European Commission, Joint Research Centre): the leader profiles
