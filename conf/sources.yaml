@@ -2,7 +2,8 @@
 #
 # Read by trafficloop/data/download.py and scripts/download_data.py; the licence table for
 # readers is docs/licences.md. Values were checked on 2026-09-27 against the hosts' own pages
-# and APIs. Sizes are exact bytes unless stated otherwise.
+# and APIs; the licence statements were checked again on 2026-11-16 (docs/licences.md gives
+# both dates where a host changed its statement). Sizes are exact bytes unless stated otherwise.
 #
 # Fields of a source
 #   title, licence, licence_url, citation, landing_page
@@ -89,7 +90,7 @@ openacc:
   kind: files
   target: openacc
   notes:
-    - "copyright.txt of every campaign: (c) European Union, 1995-2026; CC BY 4.0; reuse is allowed provided appropriate credit is given and any changes are indicated."
+    - "copyright.txt of every campaign (downloaded 2026-09-27): (c) European Union, 1995-2026; any copyright and sui generis right on the dataset is licensed under CC BY 4.0; reuse is allowed provided appropriate credit is given and any changes are indicated. The JRC catalogue record (doi 10.2905/JRC.KMH3D00, read 2026-11-16) names the European Commission reuse notice (Decision 2011/833/EU) as the use conditions."
     - The single-vehicle campaign One_vehicle_multiple_drivers_on_road_campaign (no leader) is not listed.
   # every file of the six car-following campaigns: 139 CSVs plus notes, vehicle specifications,
   # copyright.txt; subset tags: astazero, casale, cherasco, jrc_low_speed, vicolungo, zalazone
@@ -255,8 +256,8 @@ openacc:
 
 ngsim:
   title: Next Generation Simulation (NGSIM) Vehicle Trajectories and Supporting Data, I-80 and US-101
-  licence: CC BY-SA 3.0 or 4.0 (conflicting metadata)
-  licence_url: https://creativecommons.org/licenses/by-sa/4.0/
+  licence: CC BY-SA 3.0 Unported
+  licence_url: https://creativecommons.org/licenses/by-sa/3.0/legalcode
   access: open
   redistribution: allowed
   citation: >-
@@ -267,7 +268,7 @@ ngsim:
   kind: socrata
   target: ngsim
   notes:
-    - "The portal shows two licences: the data set licence 'Creative Commons Attribution | Share Alike 3.0 Unported' and the Common Core field License 'https://creativecommons.org/licenses/by-sa/4.0/'."
+    - "On 2026-11-16 the portal record states one licence, 'Creative Commons Attribution | Share Alike 3.0 Unported' (licenseId CC_30_BY_SA). Until October 2026 it also carried the Common Core field License 'https://creativecommons.org/licenses/by-sa/4.0/' (seen 2026-09-27; in the archived copies of 2026-10-06 and 2026-10-11, absent from the copy of 2026-10-22 on). Section 4(b) of version 3.0 allows adaptations under a later version; TrafficLoop shares its adaptations under CC BY-SA 4.0 (docs/licences.md, note 3)."
     - Queries without an app token share an IP-based throttling pool (HTTP 429); a rerun resumes at the first missing page.
   # One Socrata table, one query per location. bytes_estimate: 100 B per quoted CSV row of the
   # 13 selected columns, scaled from a 2,000-row sample (176.6 B/row for all 25 columns, us-101).
@@ -325,10 +326,10 @@ waymo_hu:
 
 tgsim:
   title: Third Generation Simulation Data (TGSIM), six trajectory data sets
-  licence: US public domain
+  licence: no licence stated on 2026-11-16; US public domain label on the portal until at least 2026-10-07
   licence_url: https://www.usa.gov/publicdomain/label/1.0/
   access: open
-  redistribution: allowed
+  redistribution: unclear
   citation: >-
     U.S. Department of Transportation Federal Highway Administration (2023, 2024). Third
     Generation Simulation Data (TGSIM) <data set> Trajectories [Dataset]. Provided by ITS
@@ -338,7 +339,7 @@ tgsim:
   kind: socrata
   target: tgsim
   notes:
-    - The Common Core License field is the US public domain label; the data set licence field is empty.
+    - "On 2026-11-16 the five portal records state no licence (no licenseId, none in DCAT; Common Core 3 has Rights: public). When the tables were downloaded (2026-09-28) the records carried the Common Core field License with the US public domain label http://www.usa.gov/publicdomain/label/1.0/ (archived copy of the I-90/I-94 stationary page of 2026-10-07); the field is absent from the archived copy of 2026-10-16 on (docs/licences.md, note 4)."
     - The centreline and lane-annotation files named in the descriptions (needed to project xloc_kf/yloc_kf on the road) are not attachments of the tables; where they are hosted is not known.
   # All columns of each table. bytes_estimate: the CSV size stated in the description (read
   # as MiB) plus 2 quote characters per field, rounded up to the MB. The names are the keys

@@ -108,7 +108,8 @@ only; their events must not be redistributed (`docs/licences.md`).
   profiles `data/scenarios/openacc_profiles.json` are release assets, see the release notes;
   the human platoon profiles `data/scenarios/human_profiles.json` join them in the next
   release)
-  The FollowNet-highD events are not redistributed (the terms of highD forbid derived data):
+  The FollowNet-highD events are not redistributed (the terms of highD forbid distributing the dataset or
+  modified versions of it):
   `python scripts/download_data.py follownet --yes` fetches the figshare files of Chen et al. and
   `python scripts/m1.py dataset=follownet_highd "steps=[build]"` rebuilds both versions locally.
   The models trained on the Waymo pairs are distributed under the Waymo Dataset License Agreement for

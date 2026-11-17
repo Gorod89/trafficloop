@@ -20,7 +20,8 @@ workflow by pull request.
   profiles (`data/scenarios/openacc_profiles.json`, CC BY 4.0), the checkpoints without the kNN entries (with `NOTICE.md` and the Waymo Agreement inside, since the
   `waymo_hu` models are Distributed WOD Models) and the human platoon windows of P2h
   (`data/scenarios/human_profiles.json`, CC BY-SA 4.0 as a whole: NGSIM chains under ShareAlike, TGSIM
-  public domain, AstaZero CC BY 4.0, credited per window in `source`) go into the same Zenodo
+  chains added under the public domain label that the portal showed until October 2026
+  (`docs/licences.md`, note 4), AstaZero CC BY 4.0, credited per window in `source`) go into the same Zenodo
   record as data files, which keeps the repository small and the data citable. A copy of
   the events on Hugging Face Datasets is optional and convenient for `datasets.load_dataset`.
 

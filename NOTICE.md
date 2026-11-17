@@ -40,14 +40,17 @@ these models.
 
 The entries trained on `ngsim` and on `follownet_ngsim` (the NGSIM I-80 event set of the FollowNet release,
 which carries a CC0 label on figshare but is derived from NGSIM, so NGSIM's terms apply through the
-derivation) and their checkpoints are shared, as far as NGSIM data is concerned, under CC BY-SA 4.0 with
-attribution to the U.S. Department of Transportation, Federal Highway Administration, Next Generation
-Simulation (NGSIM) Vehicle Trajectories and Supporting Data (ITS DataHub).
-
+derivation) were trained on events derived from NGSIM, which the portal publishes under CC BY-SA 3.0
+Unported. Their checkpoints are shared under CC BY-SA 4.0, a later version of that licence, with attribution
+to the U.S. Department of Transportation, Federal Highway Administration, Next Generation Simulation (NGSIM)
+Vehicle Trajectories and Supporting Data (ITS DataHub, doi:10.21949/1504477). Whether a trained model is an
+adaptation of the data in the sense of that licence is not decided here; the label meets its ShareAlike
+condition if it is.
 ## Data that is not redistributed
 
-* highD and the FollowNet-highD events derived from it: the terms of highD forbid redistributing derived
-  data. No events, trajectories or samples of them are in the repository or in the release assets; the
+* highD and the FollowNet-highD events derived from it: the terms of highD forbid distributing the dataset
+  or modified versions of it. No events, trajectories or samples of them are in the repository or in the
+  release assets; the
   events are rebuilt locally from the figshare files of the FollowNet release
   (`python scripts/download_data.py follownet --yes`, then
   `python scripts/m1.py dataset=follownet_highd "steps=[build]"`).
@@ -60,15 +63,19 @@ Simulation (NGSIM) Vehicle Trajectories and Supporting Data (ITS DataHub).
 
 ## Other sources
 
-* NGSIM (CC BY-SA 3.0 Unported on data.transportation.gov; material derived from it is shared here under
-  CC BY-SA 4.0, a later version of the same licence, as its ShareAlike clause permits): the human platoon windows `human_profiles.json` contain NGSIM chains and are
-  released under CC BY-SA 4.0 as a whole; events and models derived from NGSIM, the FollowNet NGSIM I-80 set
-  included, carry the same attribution (section above).
-* OpenACC (CC BY 4.0, European Commission, Joint Research Centre): the leader profiles
-  `openacc_profiles.json` and the events derived from the campaigns, with the changes stated in
-  `docs/data_layout.md`.
-* TGSIM (United States public domain): the near-miss episodes and the events.
+* NGSIM (CC BY-SA 3.0 Unported on data.transportation.gov; its Section 4(b) allows adaptations under a later
+  version of the licence): the human platoon windows `human_profiles.json` contain reconstructed NGSIM chains
+  and are released under CC BY-SA 4.0 as a whole; the models trained on NGSIM-derived events, the FollowNet
+  NGSIM I-80 set included, carry the same attribution (section above).
+* OpenACC (European Commission, Joint Research Centre, doi:10.2905/JRC.KMH3D00; © European Union, CC BY 4.0
+  by the copyright notice that ships with the files): the leader profiles `openacc_profiles.json` and the two
+  manually driven AstaZero windows of `human_profiles.json`, with the changes stated in `docs/data_layout.md`
+  and `docs/protocols.md`.
+* TGSIM (U.S. Department of Transportation, Federal Highway Administration, ITS DataHub): the near-miss
+  episodes and the reconstructed TGSIM chains of `human_profiles.json`. The portal records carried the U.S.
+  public domain label when the tables were downloaded (September 2026); since October 2026 they state no
+  licence (`docs/licences.md`, note 4). Cite the data sets as their records recommend.
 * FollowNet event sets (Chen et al., CC0 label on figshare): read from the figshare release; the NGSIM I-80
-  set inherits NGSIM's CC BY-SA 4.0 and the HighD sets the terms of highD, as above.
+  set inherits NGSIM's ShareAlike terms and the HighD sets the terms of highD, as above.
 
 Citations of every source are in `docs/licences.md`.
