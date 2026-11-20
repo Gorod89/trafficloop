@@ -1,0 +1,4 @@
+dataset,n_models,n_within_10,n_ci_within_10,n_better_30,n_worse_30,n_beyond_30,best_model,best_ratio,best_low,best_high,missing,ratios
+follownet_highd,10,0,0,0,10,10,mlp,2.460197136815305,2.3945487264530825,2.5260406661018706,,"mlp 2.460, diffusion 3.388, perl 3.697, gru 4.051, lstm 4.486, mdn_lstm 5.368, maml_lstm 13.031, stability_mlp 15.296, knn 15.959, pidl 16.134"
+highd,10,0,0,0,10,10,mlp,2.78103289158356,2.725113245357398,2.8368898045218933,,"mlp 2.781, diffusion 3.393, gru 4.290, perl 4.369, lstm 4.688, mdn_lstm 5.202, maml_lstm 13.088, stability_mlp 14.341, knn 14.759, pidl 17.354"
+ngsim,10,1,1,1,6,7,diffusion,0.6151719274683546,0.568139033476393,0.6663107440574859,,"diffusion 0.615, mlp 1.032, gru 1.145, lstm 1.296, perl 1.582, mdn_lstm 1.757, maml_lstm 3.376, stability_mlp 7.420, knn 7.608, pidl 7.646"

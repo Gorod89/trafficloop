@@ -154,7 +154,7 @@ def test_palettes_are_complete_and_distinct():
     assert set(style.FAMILY_COLORS) == set(style.FAMILY_ORDER)
     assert len(set(style.FAMILY_COLORS.values())) == len(style.FAMILY_COLORS)
     assert set(style.DATASET_COLORS) == set(style.DATASET_ORDER) == set(style.DATASET_LABELS) == set(style.DATASET_SHORT)
-    assert len(set(style.DATASET_COLORS.values())) == 6
+    assert len(set(style.DATASET_COLORS.values())) == 7
     luminance = [0.2126 * r + 0.7152 * g + 0.0722 * b for r, g, b in map(mcolors.to_rgb, style.HORIZON_GREYS)]
     assert luminance == sorted(luminance, reverse=True)  # ordinal ramp, light to dark
     assert style.family_color("unknown") == style.OTHER_COLOR
@@ -165,7 +165,7 @@ def test_constants_match_the_analysis():
     from trafficloop.experiments import analysis as an
 
     assert plots.SUBSET == an.SUBSET
-    assert plots.MAIN_DATASETS == an.MAIN_DATASETS
+    assert set(plots.MAIN_DATASETS) <= set(an.MAIN_DATASETS) and len(plots.MAIN_DATASETS) == 2  # two-panel figures
     assert plots.LEAK_DATASETS == an.LEAK_DATASETS
     assert plots.REFERENCE == an.REFERENCE
     assert set(style.DATASET_ORDER) == set(an.TRANSFER_DATASETS)

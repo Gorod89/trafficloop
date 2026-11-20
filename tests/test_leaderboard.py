@@ -401,3 +401,58 @@ def test_pages_are_written(world, tmp_path):
 def test_html_page_without_images(world):
     page = html_page(world["boards"])
     assert "<table>" in page and "data:image" not in page
+
+
+def test_author_note_names_the_entries_of_the_authors():
+    from types import SimpleNamespace
+
+    from trafficloop.leaderboard.render import author_note
+    from trafficloop.leaderboard.tables import AUTHOR_ENTRIES
+
+    board = SimpleNamespace(main=pd.DataFrame({"model": ["idm", "stability_mlp", "residual_idm_certified"]}))
+    note = author_note(board)
+    assert note.startswith("Entries by the authors of the benchmark (marked †): ")
+    assert all(f"`{label}`" in note for label in AUTHOR_ENTRIES)
+    assert author_note(SimpleNamespace(main=pd.DataFrame({"model": ["idm", "mlp"]}))) == ""
+
+
+def _display_board():
+    from types import SimpleNamespace
+
+    models = ["residual_idm_certified", "pidl", "perl", "stability_mlp", "idm", "mlp"]
+    families = ["network", "network", "network", "network", "mechanistic", "network"]
+    main = pd.DataFrame({"model": models, "family": families, "p0_ratio": 1.0, "p0_ratio_low": 0.9,
+                         "p0_ratio_high": 1.1})
+    leak = pd.DataFrame({"model": ["pidl", "mlp"], "family": ["network", "network"], "label": DRIVER_LEAK, "run": "r"})
+    transfer = pd.DataFrame({"model": ["residual_idm_certified", "mlp"], "family": ["network", "network"],
+                             "tested_on": "beta", "ratio": [1.2, 1.1], "low": [1.1, 1.0], "high": [1.3, 1.2],
+                             "n_drivers": 10, "note": ""})
+    return SimpleNamespace(main=main, leak=leak, transfer=transfer)
+
+
+def test_hybrid_entries_are_shown_with_the_family_hybrid():
+    from trafficloop.leaderboard.render import html_table, leak_display, main_display, markdown_table, transfer_display
+
+    board = _display_board()
+    main = main_display(board)
+    families = dict(zip(main["model"].str.rstrip("†"), main["family"]))
+    assert families == {"residual_idm_certified": "hybrid", "pidl": "hybrid", "perl": "hybrid",
+                        "stability_mlp": "network", "idm": "mechanistic", "mlp": "network"}
+    assert leak_display(board)["family"].tolist() == ["hybrid", "network"]
+    assert transfer_display(board)[0]["family"].tolist() == ["hybrid", "network"]
+    assert "| hybrid |" in markdown_table(main) and "<td class=\"text\">hybrid</td>" in html_table(main)
+    assert board.main["family"].tolist()[:3] == ["network"] * 3  # display only: the board itself is unchanged
+
+
+def test_entries_of_the_authors_are_marked_with_a_dagger():
+    from trafficloop.leaderboard.render import html_table, main_display, markdown_table, transfer_display
+    from trafficloop.leaderboard.tables import AUTHOR_ENTRIES
+
+    board = _display_board()
+    names = main_display(board)["model"].tolist()
+    marked = [n for n in names if n.endswith("†")]
+    assert sorted(n[:-1] for n in marked) == sorted(m for m in AUTHOR_ENTRIES if m in set(board.main["model"]))
+    assert "idm" in names and "pidl" in names and "mlp" in names  # other entries unmarked
+    assert transfer_display(board)[0]["model"].tolist() == ["residual_idm_certified†", "mlp"]
+    assert "| residual_idm_certified† |" in markdown_table(main_display(board))
+    assert "residual_idm_certified†</td>" in html_table(main_display(board))

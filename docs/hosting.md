@@ -19,9 +19,9 @@ workflow by pull request.
 * Give the release a DOI through Zenodo (GitHub integration: one click per release); the OpenACC leader
   profiles (`data/scenarios/openacc_profiles.json`, CC BY 4.0), the checkpoints without the kNN entries (with `NOTICE.md` and the Waymo Agreement inside, since the
   `waymo_hu` models are Distributed WOD Models) and the human platoon windows of P2h
-  (`data/scenarios/human_profiles.json`, CC BY-SA 4.0 as a whole: NGSIM chains under ShareAlike, TGSIM
-  chains added under the public domain label that the portal showed until October 2026
-  (`docs/licences.md`, note 4), AstaZero CC BY 4.0, credited per window in `source`) go into the same Zenodo
+  (`data/scenarios/human_profiles.json`; every window keeps the terms of its source, named in its `source`
+  field: NGSIM chains CC BY-SA 4.0, AstaZero runs CC BY 4.0, TGSIM chains without a licence of this
+  repository, see `docs/licences.md`, note 4) go into the same Zenodo
   record as data files, which keeps the repository small and the data citable. A copy of
   the events on Hugging Face Datasets is optional and convenient for `datasets.load_dataset`.
 
@@ -35,10 +35,11 @@ An entry is a run directory (`docs/leaderboard.md`, section 1). A submitter
 2. opens a pull request that adds `results/models/<dataset>/<version>/<split>-fold<k>/<label>/seed<s>/`
    (JSON and parquet only; the checkpoint goes to a release asset or Zenodo and its URL into
    `train.json` under `provenance.checkpoint_url`),
-3. the workflow runs the tests and `scripts/make_leaderboard.py`; a run whose checklist is
-   incomplete is listed under "refused entries" with the reason, and the pull request shows
-   the rebuilt tables in its artefact,
-4. a maintainer merges; the page updates.
+3. the workflow runs the tests and `scripts/make_leaderboard.py` as a check; a run whose
+   checklist is incomplete is listed under "refused entries" with the reason,
+4. a maintainer rebuilds the pages with all per-event tables, commits them and merges; the
+   page that is published is the committed one. (The per-event tables of the dataset `highd`
+   are not distributed, so a rebuild from the release assets alone has no intervals for it.)
 
 Because the composite rank intervals depend on the whole set of entries, the leaderboard is
 rebuilt as a whole on every merge; nothing is computed incrementally.

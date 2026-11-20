@@ -245,6 +245,7 @@ def test_e2_inflation_sign_affected_subset_and_holm(world):
     assert (mlp["inflation"] == 0).all() and (mlp["p_bootstrap"] == 1).all()
     for _, part in e2.groupby(["subset", "metric"]):
         np.testing.assert_allclose(part["p_holm"], holm(part["p_bootstrap"].to_numpy()))
+        np.testing.assert_allclose(part["p_holm_wilcoxon"], holm(part["p_wilcoxon"].to_numpy()))
         assert (part["p_holm"] >= part["p_bootstrap"] - 1e-15).all()
     means = an.e2_class_means(e2).set_index(["subset", "metric", "family"])
     assert means.loc[("all", "p0_rmse_a", "mechanistic"), "mean_inflation"] > 0
@@ -355,7 +356,7 @@ def test_report_runs_end_to_end(world):
     text = path.read_text(encoding="utf-8")
     for heading in ("## Campaigns", "## E1", "## E2", "## E3", "## E4", "### alpha"):
         assert heading in text
-    assert "not run" in text and "Not available for ngsim, follownet_highd" in text
+    assert "not run" in text and "Not available for ngsim, follownet_highd, highd" in text
     for name in ("e1_ratios", "e2_paired", "e2_unpaired", "e3_rankings", "e3_kendall", "e4_transfer"):
         assert (out / f"{name}.csv").exists()
     e2 = pd.read_csv(out / "e2_paired.csv")

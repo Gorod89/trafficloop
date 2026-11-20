@@ -7,6 +7,10 @@ follownet_ngsim,v1,gipps,perl,idm_median
 follownet_ngsim,v1h,idm_median,newell,gipps_median
 follownet_ngsim,v2,gipps,gipps_median,idm
 follownet_ngsim,v2h,idm_median,idm,gipps
+highd,v1,ddpg,gipps,idm
+highd,v1h,ddpg,gipps,idm
+highd,v2,ddpg,idm,gipps
+highd,v2h,ddpg,gipps,idm
 ngsim,v1,newell_median,newell,idm_median
 ngsim,v1h,newell,newell_median,idm_median
 ngsim,v2,newell_median,gipps,newell

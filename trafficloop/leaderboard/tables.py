@@ -69,6 +69,15 @@ ABLATION_LABELS = (
     "mlp_loop_h15", "mlp_loop_h30", "lstm_loop_h15", "lstm_loop_h30",
     "mlp_hist30", "lstm_hist30", "mlp_wide", "lstm_wide", "stability_mlp_nbhd",
 )
+#: entries that are methods of the benchmark's authors: label -> note printed under the main table
+AUTHOR_ENTRIES = {
+    "residual_idm_certified": (
+        "the authors' own method (Gorodnichev and Moseva, Mathematics 2026, 14(22), 4152), added on 2026-10-15 after the "
+        "other entries had been scored; its amplitude and the rule that chooses its core were fixed after two pilot "
+        "configurations on NGSIM, from the admissible certificate budgets and not from a score, although the pilot scores "
+        "had been seen (docs/decisions.md, M2-8 and REV1-4); its unstable fraction is zero by construction"),
+    "stability_mlp": "the authors' own variant (an MLP with a string-stability penalty), part of the original set of entries",
+}
 FAMILIES = ("baseline", "mechanistic", "network")
 #: driver-bootstrap metrics: column -> (per-event table, statistic)
 DRIVER_METRICS = {

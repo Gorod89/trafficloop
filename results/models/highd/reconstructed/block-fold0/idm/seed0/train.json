@@ -1,0 +1,46 @@
+{
+  "class": "idm",
+  "config_hash": "606add411a15",
+  "data_version": "reconstructed",
+  "dataset": "highd",
+  "family": "mechanistic",
+  "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+  "model": "idm",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "block",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0,
+      "n_events": 2551,
+      "n_samples": 420768,
+      "rmse_s": 7.037479535225502,
+      "rmse_v": 0.8352158824079806
+    },
+    "p0": {
+      "rmse_a": 1.5837193074290505,
+      "rmse_s": 0.015834519222959854,
+      "rmse_v": 0.1583453073795216
+    }
+  },
+  "training": {
+    "collision_rate": 0.0,
+    "kind": "pooled",
+    "n_events": 2000,
+    "objective": 0.2733657044719121,
+    "params": {
+      "T": 1.0396289825439453,
+      "a": 0.6674425601959229,
+      "b": 0.5009821653366089,
+      "s0": 4.081465721130371,
+      "v0": 32.04749298095703
+    },
+    "rmse_s": 6.83186821504204,
+    "rmse_v": 0.8399323907615788,
+    "seconds": 5.9
+  }
+}

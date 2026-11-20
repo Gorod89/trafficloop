@@ -27,6 +27,7 @@ from trafficloop.protocols.composite import pareto_front
 #: as in trafficloop.experiments.analysis (tests/test_figures.py checks they agree)
 REFERENCE = "persistence"
 SUBSET = ("idm", "gipps", "mlp", "lstm", "mlp_loop", "lstm_loop", "ddpg", "stability_mlp")
+#: the two datasets of the two-panel figures; raw highD (analysis.MAIN_DATASETS) is drawn by passing `datasets`
 MAIN_DATASETS = ("ngsim", "follownet_highd")
 LEAK_DATASETS = ("ngsim", "openacc")
 #: the four models of the concave-growth figure

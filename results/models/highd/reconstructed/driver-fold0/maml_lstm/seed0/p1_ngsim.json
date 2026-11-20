@@ -1,0 +1,82 @@
+{
+  "checklist": {
+    "closed_loop_horizon": "10 s, 30 s, whole event; warm-up 3 s",
+    "data_version": "reconstructed",
+    "mechanistic_calibration_protocol": "not a mechanistic model",
+    "reconstruction_method": "qp-semi-implicit-v1",
+    "seeds": {
+      "global": 0,
+      "split": 0,
+      "train": 0
+    },
+    "split_type": "driver"
+  },
+  "config": {
+    "batch_windows": 4096,
+    "clip": [
+      -8.0,
+      4.0
+    ],
+    "fold": 0,
+    "horizons": [
+      10.0,
+      30.0
+    ],
+    "protocol": "p1",
+    "split": "driver",
+    "tested_on": "ngsim",
+    "version": "reconstructed",
+    "warmup": 30
+  },
+  "config_hash": "9de8b9140df1",
+  "data_version": "reconstructed",
+  "git_revision": "31967171f678409c62fe94c1e6f668b0559b3ce3",
+  "model": {
+    "class": "maml_lstm",
+    "family": "network",
+    "label": "maml_lstm",
+    "provenance": {
+      "config_hash": "26896dbe15d7",
+      "data_version": "reconstructed",
+      "dataset": "highd",
+      "git_revision": "13c335120a55e5fc148a6b102c7d2dfcda454cb0",
+      "seed": 0,
+      "split": {
+        "fold": 0,
+        "kind": "driver",
+        "seed": 0
+      }
+    }
+  },
+  "protocol": "p1",
+  "seconds": 6.8,
+  "summary": {
+    "h10": {
+      "collision_rate": 0.08147379346133887,
+      "event_collision_rate": 0.24624829467939974,
+      "horizon_s": 10.0,
+      "n_events": 2932,
+      "n_samples": 1156200,
+      "n_windows": 11562,
+      "rmse_s": 5.214111686366151,
+      "rmse_v": 1.313771948232426
+    },
+    "h30": {
+      "collision_rate": 0.32894736842105265,
+      "event_collision_rate": 0.43407487791644056,
+      "horizon_s": 30.0,
+      "n_events": 1843,
+      "n_samples": 843600,
+      "n_windows": 2812,
+      "rmse_s": 30.328845042989247,
+      "rmse_v": 2.6851414450676674
+    },
+    "whole": {
+      "collision_rate": 0.3281036834924966,
+      "n_events": 2932,
+      "n_samples": 1299210,
+      "rmse_s": 147.33070959398688,
+      "rmse_v": 5.49959633424781
+    }
+  }
+}

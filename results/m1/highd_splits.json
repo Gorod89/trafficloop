@@ -1,0 +1,74 @@
+{
+  "block": {
+    "driver_disjoint": true,
+    "n_folds": 5,
+    "n_test": 2551,
+    "n_train": 8210,
+    "n_unused": 9,
+    "n_val": 1900,
+    "notes": [],
+    "share_samples_test": 0.20000056017074005,
+    "share_samples_val": 0.14984247198546116,
+    "share_test_events_with_training_follower_as_leader": 0.0,
+    "share_test_followers_seen": 0.0,
+    "test_followers_seen_in_training": 0
+  },
+  "driver": {
+    "driver_disjoint": true,
+    "n_folds": 5,
+    "n_test": 2535,
+    "n_train": 8252,
+    "n_unused": 0,
+    "n_val": 1883,
+    "notes": [],
+    "share_samples_test": 0.20002416736621323,
+    "share_samples_val": 0.1500109233294308,
+    "share_test_events_with_training_follower_as_leader": 0.49546351084812623,
+    "share_test_followers_seen": 0.0,
+    "test_followers_seen_in_training": 0
+  },
+  "event": {
+    "driver_disjoint": false,
+    "n_folds": 5,
+    "n_test": 2534,
+    "n_train": 8240,
+    "n_unused": 0,
+    "n_val": 1896,
+    "notes": [],
+    "share_samples_test": 0.20000016004878288,
+    "share_samples_val": 0.15005493674471979,
+    "share_test_events_with_training_follower_as_leader": 0.5146014206787688,
+    "share_test_followers_seen": 0.008699090549624358,
+    "test_followers_seen_in_training": 22
+  },
+  "regime": {
+    "driver_disjoint": true,
+    "n_folds": 3,
+    "n_test": 6416,
+    "n_train": 5061,
+    "n_unused": 20,
+    "n_val": 1173,
+    "notes": [
+      "only 3 groups: 5 folds reduced to leave-one-group-out"
+    ],
+    "share_samples_test": 0.5687429528520292,
+    "share_samples_val": 0.08057215839387845,
+    "share_test_events_with_training_follower_as_leader": 0.23207605985037408,
+    "share_test_followers_seen": 0.0,
+    "test_followers_seen_in_training": 0
+  },
+  "site": {
+    "driver_disjoint": true,
+    "n_folds": 5,
+    "n_test": 11317,
+    "n_train": 1098,
+    "n_unused": 0,
+    "n_val": 255,
+    "notes": [],
+    "share_samples_test": 0.914301879212784,
+    "share_samples_val": 0.01610090755662326,
+    "share_test_events_with_training_follower_as_leader": 0.0,
+    "share_test_followers_seen": 0.0,
+    "test_followers_seen_in_training": 0
+  }
+}

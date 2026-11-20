@@ -25,6 +25,11 @@ and a step-response gain test (P3), a rare-event suite of pulses, a full stop, c
 composite traffic-level score ranks the models on the concave-growth error, the hysteresis
 error, the unstable fraction and the platoon collisions.
 
+A seventh dataset, raw highD (the benchmark's own extraction of the dataset for which the plan
+registered H5.1, H5.3 and H5.4; 12,670 events, kept local, results as aggregate numbers only),
+was added on 2026-11-17. Findings 1 to 14 below are stated for the six earlier datasets unless
+they name raw highD; finding 16 gives what holds on it.
+
 ## Headline findings
 
 1. **One-step accuracy is the wrong yardstick (H5.1, H5.3).** On NGSIM only the diffusion
@@ -145,6 +150,102 @@ error, the unstable fraction and the platoon collisions.
     for the residual to act on NGSIM (0.0018) and Waymo (0.12), against 0.15 to 0.34 for the
     margin core (lipschitz 0.45 to 1.02 at r_max = 0.3 m/s^2).
 
+12. **The headline correlation is not produced by the construction of the composite (E3f, exploratory).** An entry
+    without a value of an input takes the last rank on it; only the unstable fraction is ever missing (persistence
+    and constant speed everywhere, one or two learned entries per dataset). Without the two baselines tau(P0,
+    composite) is -0.38 to -0.68 (further from zero than with them on five of six datasets); with every entry scored
+    on the inputs it has, -0.43 to -0.62; with both, -0.39 to -0.68; every interval excludes zero. Leaving out any
+    single entry moves tau by at most 0.06. Over the three seeds and five folds of the main datasets it ranges from
+    -0.43 to -0.56 (NGSIM) and -0.43 to -0.53 (FollowNet-HighD): spreads of 0.13 and 0.10, close to the widths of the
+    bootstrap intervals (0.15 and 0.12), which resample data and not training runs; one run per dataset lies above
+    the interval of the main run. In these seven runs the top three of NGSIM are always the Newell median, Newell
+    and the IDM median; on FollowNet-HighD DDPG is first in five runs and the certified hybrid in two (the main run
+    among them) and second in five. Leaving one input out of the four-input composite: without the concave-growth
+    or the hysteresis error tau stays between -0.45 and -0.63; without the unstable fraction or the collision count
+    it is weaker on every dataset (-0.35 to -0.60 on five; -0.23 and -0.16 on FollowNet-NGSIM, p = 0.11 and 0.27
+    over the 25 entries): on FollowNet-NGSIM the correlation rests on the two safety inputs, on the other five no
+    single input carries it. With a collision gate (entries that collide in any in-range platoon rank last) 3 to 9
+    entries per dataset stay admissible and tau is -0.44 to -0.64. The collision input counts the followers whose
+    own gap closes and lets a collided vehicle drive on, so followers that never react count one collision per
+    profile (persistence, constant speed: 8 to 17 on 1,000 to 2,000 followers); with the followers at or behind
+    the first collision, or the profiles with a collision, in its place the baselines fall by 0.5 to 4 places and
+    tau is -0.34 to -0.57 and -0.33 to -0.60 (every interval excludes zero; DDPG moves ahead of the certified
+    hybrid on FollowNet-HighD under the first count). The stability rule counts a model that passes a perturbation
+    on unchanged as stable: the two Newell entries (gain 0.9995 at 0.1 Hz) have an unstable fraction of zero and
+    lead the composite on NGSIM, OpenACC and TGSIM. With neutral stability counted as instability only these two
+    entries change, tau weakens on every dataset (-0.28 on FollowNet-NGSIM, p = 0.055; -0.40 to -0.56 on the other
+    five) and the leaders on the three datasets become the IDM median, Gipps, DDPG and the pooled IDM; a tolerance
+    of 1e-3 instead of 1e-5 changes no leader. The correlation is mainly a
+    difference between the families: inside the 17 learned entries it is negative on all six datasets but
+    significant on three, inside the six mechanistic entries there is no evidence either way (E3e).
+13. **The correlation over all entries is largely a contrast of training objectives (E3g, exploratory).** The
+    six calibrated entries, never fitted to the one-step acceleration, hold a median rank of 22.5 of 25 under P0
+    on every dataset and of 3.5 to 5.75 under the composite; the ten entries trained on the one-step error alone
+    hold 7 to 9 and 17 to 20.5; DDPG, trained on a reward, sits with the calibrations (20 or 21 under P0, 2 to 8.5
+    under the composite); a rollout or multi-step loss leaves the one-step places and improves the composite on
+    NGSIM and FollowNet-NGSIM only. With the objective held fixed the evidence is weak: inside the ten entries
+    with a one-step objective tau(P0, composite) is negative on all six datasets (-0.04 to -0.64), inside the nine
+    others (calibrations, policies, certified hybrid) on five (-0.11 to -0.44; 0.03 on FollowNet-HighD), and after
+    Holm's correction over the six datasets it is significant on none in either group (uncorrected: NGSIM and
+    TGSIM in the first). Inside the learned family it stays significant on three datasets after the correction. The
+    benchmark cannot separate the objective from the model family: no mechanistic entry is calibrated on the
+    one-step error and no network is trained on the closed-loop error alone.
+
+14. **The certified hybrid improves on the calibrated IDM only where that model is unstable (exploratory).** The
+    pooled IDM is stable at every equilibrium on four datasets and unstable at 64 % (FollowNet-HighD) and 27 %
+    (OpenACC); the hybrid is stable everywhere, has a higher whole-event error on all six datasets and a better
+    composite on FollowNet-HighD alone (0.115 against 0.177). Training its bounded residual lowers the one-step
+    validation error by 1.6 to 3.7 %: the residual is nearly inert. On raw highD (finding 16) the pooled IDM is
+    unstable at 19 % of its equilibria and still ranks ahead of the hybrid (0.161 against 0.214, ranks 2.5 and 6).
+15. **The stability of the certified hybrid is that of its core (exploratory, decision REV4-1).** The core of the
+    hybrid, an IDM calibrated with the stability margin 0.2, scored as an entry of its own (`idm_margin`, no residual,
+    no training; `results/exploratory/margin_core/comparison.csv`), is string stable at every equilibrium and
+    collision-free in the in-range platoons on all seven datasets, takes the hybrid's composite and rank on six of
+    them (half a place less on OpenACC) and has a slightly lower whole-event error on all seven; its one-step error
+    is 1.7 to 3.7 % higher. Calibrating the IDM with a stability margin removes the instability at a cost in
+    accuracy; the certified learned residual adds nothing measurable at the traffic level.
+16. **The tests registered for highD give the same verdicts on raw highD (confirmatory; HD-1 to HD-5).** Own
+    extraction: 12,670 events of 12,603 followers. Deciding run (driver split, fold 0, seed 0): no entry within 10 %
+    of persistence and all 23 more than 30 % behind it (best: the MLP, 2.78 times); the three most accurate
+    entries, one step ahead and over the whole event, all leave the top three of the composite; tau between the
+    rankings by spacing and by speed error 0.85 over the whole event. Exploratory: tau(P0, composite) is -0.50
+    [-0.57, -0.40]; over the seven training runs (three seeds, five folds) the statistics of the three tests stay
+    the same (best ratio 2.67 to 2.93, three of three dropped, whole-event tau 0.83 to 0.90) and so they do under
+    the split by blocks of recordings, which shares no vehicle between training and test (tau(P0, composite)
+    -0.41). The leader of the composite is not robust there: the IDM in three of the seven runs, Newell in two, the
+    IDM median and DDPG in one each (DDPG in the deciding run); the certified hybrid, at ranks 5.5 to 7, is the only
+    entry that is string stable and collision-free in every run. H5.2 was not run on highD (0.53 % of the followers
+    have two events; the contract required 5 %). On NGSIM one of the seven training runs (seed 1) has a whole-event
+    tau of 0.75 for H5.4, below the threshold of refutation (`results/m4/e3f_run_statistics.csv`).
+17. **Three further checks (E3h, exploratory, decision REV5-1).** (a) H5.1 on the ten entries with a
+    one-step objective gives the verdict of the 23: on NGSIM one within 10 % of persistence, one more than 30 %
+    ahead and six more than 30 % behind; on both highD sets all ten more than 30 % behind. (b) With the P2 inputs
+    over all leader profiles instead of the in-range ones, all three most accurate entries still leave the top
+    three on NGSIM, FollowNet-HighD and raw highD (tau -0.56, -0.53, -0.52); the top three change on NGSIM (DDPG,
+    the certified hybrid, Newell) and raw highD (DDPG, IDM, IDM median). (c) Permuting the composite inside the six
+    objective groups, which keeps only the contrast between the groups, leaves a mean tau of -0.33 to -0.48: 74 to
+    83 % of the observed correlation on six datasets and all of it on Waymo; the observed tau is in the lower tail
+    of this reference on TGSIM, NGSIM and FollowNet-HighD only (shares 0.012, 0.015, 0.037, uncorrected; none below
+    0.05 after Holm's correction). The correlation over all entries is largely a contrast between kinds of entries
+    (`results/m4/e3h_*.csv`).
+
+## Registered hypotheses, verdicts by the registered criteria
+
+| Hypothesis | Registered criterion | Result | Verdict |
+|---|---|---|---|
+| H5.1 | persistence within 10 % of the one-step models (at least three models on NGSIM and highD); refuted by a gap above 30 % | NGSIM: 1 of 23 within 10 %, 19 worse by more than 30 %, diffusion 38 % better (a gap above 30 % for 20 of 23); FollowNet-HighD, which stood for highD (D12), and raw highD (HD-2): none within 10 %, all 23 worse by more than 30 % | refuted when the criterion is read for the majority of the models (reading fixed after the results, REV3-4), in favour of persistence |
+| H5.2 | event split inflates the networks by at least 15 % and the IDM by less than 5 %; refuted below 5 % for the networks | networks 1.1 % (NGSIM) and 1.8 % (OpenACC) on average; of the twelve single cases ten below 5 %, two at 5.4 % | refuted when the bound is read for the class mean (REV2-3) |
+| H5.3 | at least 2 of the 3 best by trajectory RMSE leave the composite's top three; refuted when the top threes coincide | NGSIM, FollowNet-HighD and raw highD: 3 of 3 leave for the one-step and the whole-event error, in every bootstrap replicate at least two | confirmed |
+| H5.4 | rankings by spacing and speed diverge, tau below 0.5; refuted above 0.8 | tau 0.83 to 0.87 on NGSIM and FollowNet-HighD; raw highD 0.85 [0.79, 0.88] over the whole event (0.89 at 10 s, 0.81 at 30 s) | refuted |
+
+Only these four tests on the datasets of the registered round are confirmatory, for highD first on FollowNet-HighD
+and then, under a contract written before the run (HD-1, HD-2), on raw highD; the other datasets, E1b, E3b to E3g,
+E5, P2h and the certified entry were added after their results and are exploratory (decisions R8, R9, REV1-1 to
+REV1-4, REV2-1 to REV2-4). The margin core of the certified entry (REV4-1) and, on raw highD, the spread over seeds
+and folds and the run under the block split (HD-2, HD-5) are exploratory as well; each was specified before it was
+run. The certified hybrid is the authors' own method, added after the other entries had been scored; its
+unstable fraction is zero by construction.
+
 ## Composite leaderboard (top eight per dataset)
 
 From `results/m4/e3_rankings.csv` (25 entries, sorted by the composite, ties by the
@@ -197,13 +298,33 @@ and the refused entries (none of the 660 run directories) are in `results/leader
   platoon is still not measured.
 * The mechanistic models are calibrated on a 2,000-event sample with one objective; the
   networks use one training budget per family (decision M2-4). The tables are fold 0 and
-  seed 0; seeds 1-2 and folds 1-4 of the driver split exist for every entry on NGSIM and
-  HighD (seed and fold spread of the leaderboard), the four other datasets have fold 0 and
-  seed 0 only, and E1 reports five clean-arm folds for the eight-model subset.
+  seed 0; seeds 1-2 and folds 1-4 of the driver split exist for every entry on NGSIM,
+  FollowNet-HighD and raw highD (seed and fold spread of the leaderboard), the four other
+  datasets have fold 0 and seed 0 only, and E1 reports five clean-arm folds for the eight-model subset.
 * E5 tunes two networks on one dataset, one fold and one seed; its runs live in
   `results/sweeps/` and are never ranked.
 * FollowNet-HighD events define spacing as `dhw` and have no driver ids (driver split =
   event split there); the NGSIM near-miss set is not used for scoring.
+* Vehicles shared between training and evaluation. Under the driver split the test followers
+  are new, but many test events are led by a vehicle that follows in a training event: 75 %
+  (NGSIM), 80 % (OpenACC), 76 % (TGSIM), 27 % (Waymo), 50 % (raw highD); unknown for the two
+  FollowNet sets, which carry no identities. The block split removes this on NGSIM, TGSIM,
+  Waymo and raw highD, not on OpenACC (25 vehicles); only raw highD has a run under it (HD-5).
+* The references of P2, P2h and P4 are cut from all recorded data, without regard to the
+  split. P2: 19 leader windows with their recorded followers from OpenACC campaign files that
+  also hold 34 % of the OpenACC training events (14 % overlap a window in time). P2h: in all
+  40 NGSIM windows and 55 of the 56 TGSIM windows a follower of the chain also follows in a
+  training event of that dataset (61 % and 66 % of the chain followers). P4: 54 % of the
+  followers of the recorded TGSIM episodes follow in a TGSIM training event. Entries trained
+  on OpenACC (P2 inputs of the composite), on NGSIM and TGSIM (human-referenced composites)
+  and on TGSIM (recorded-episode collision rate) have therefore seen part of their reference;
+  for entries trained elsewhere, and for the registered tests, these references are foreign.
+* H5.4 was registered for the closed-loop protocol without a horizon. On raw highD the rule
+  refutes at every horizon by the point estimate (0.89, 0.81, 0.85), while the lower bounds
+  of the intervals at 30 s (0.75) and over the whole event (0.79) lie below 0.8.
+* The contract of the run on raw highD was committed before any entry was calibrated,
+  trained or scored on it, after a probe read of two recordings and an interrupted
+  extraction (HD-6).
 
 ## Reproduction
 

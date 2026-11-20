@@ -1,0 +1,43 @@
+{
+  "class": "idm_median",
+  "config_hash": "2f8b8e2c4c79",
+  "data_version": "reconstructed",
+  "dataset": "highd",
+  "family": "mechanistic",
+  "git_revision": "bff18c8066137b539fe46eb027699b8cfdc12b9c",
+  "model": "idm_median",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 2,
+    "kind": "driver",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0,
+      "n_events": 2537,
+      "n_samples": 421111,
+      "rmse_s": 9.17145419123782,
+      "rmse_v": 1.1414238577960445
+    },
+    "p0": {
+      "rmse_a": 0.8308816168414601,
+      "rmse_s": 0.00821871368059206,
+      "rmse_v": 0.08218725119576101
+    }
+  },
+  "training": {
+    "kind": "median of per-event estimates",
+    "n_events": 1000,
+    "n_used": 1000,
+    "params": {
+      "T": 0.5724837183952332,
+      "a": 0.7815733850002289,
+      "b": 5.904621362686157,
+      "s0": 5.909112453460693,
+      "v0": 31.76948070526123
+    },
+    "seconds": 62.6
+  }
+}

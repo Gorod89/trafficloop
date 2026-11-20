@@ -1,0 +1,108 @@
+{
+  "checklist": {
+    "closed_loop_horizon": "hold 60.0 s then the leader profile; warm-up 3 s",
+    "data_version": "reconstructed",
+    "mechanistic_calibration_protocol": "not a mechanistic model",
+    "reconstruction_method": "qp-semi-implicit-v1",
+    "seeds": {
+      "global": 0,
+      "split": 0,
+      "train": 0
+    },
+    "split_type": "driver"
+  },
+  "config": {
+    "clip": [
+      -8.0,
+      4.0
+    ],
+    "fold": 0,
+    "hold": 60.0,
+    "n_vehicles": [
+      20,
+      100
+    ],
+    "precision": "full",
+    "profiles": "data/scenarios/human_profiles.json",
+    "protocol": "p2h",
+    "pulse": {
+      "accel": 1.5,
+      "decel": -3.0,
+      "hold_low": 10.0,
+      "tail": 240.0,
+      "v0": "auto",
+      "v0_max": 25.0,
+      "v_low_ratio": 0.4
+    },
+    "source_sample": 20000,
+    "split": "driver",
+    "version": "reconstructed",
+    "warmup": 30,
+    "window": 300.0
+  },
+  "config_hash": "606b746a62a7",
+  "data_version": "reconstructed",
+  "git_revision": "31967171f678409c62fe94c1e6f668b0559b3ce3",
+  "model": {
+    "class": "stability_mlp",
+    "family": "network",
+    "label": "stability_mlp",
+    "provenance": {
+      "config_hash": "b566d074271f",
+      "data_version": "reconstructed",
+      "dataset": "highd",
+      "git_revision": "13c335120a55e5fc148a6b102c7d2dfcda454cb0",
+      "seed": 0,
+      "split": {
+        "fold": 0,
+        "kind": "driver",
+        "seed": 0
+      }
+    }
+  },
+  "protocol": "p2h",
+  "seconds": 94.5,
+  "summary": {
+    "collisions_100": 863,
+    "collisions_100_in_range": 315,
+    "collisions_20": 403,
+    "collisions_20_in_range": 136,
+    "concave_growth_error": 0.7181054743138058,
+    "concave_growth_error_in_range": 0.9540280205441597,
+    "fd_bins_compared": 29,
+    "fd_error": 1177.7818844099484,
+    "fd_error_rel": 0.49635941520028676,
+    "growth_exponent_100": -1.749714840426831,
+    "growth_exponent_100_in_range": -1.4898010315302515,
+    "growth_exponent_20": -0.13072417995239993,
+    "growth_exponent_20_in_range": -0.20071103217091393,
+    "hysteresis_area_100": 22.999478512560895,
+    "hysteresis_area_20": 40.819046219773156,
+    "hysteresis_error": 62.39700889582761,
+    "hysteresis_error_in_range": 93.67362521309549,
+    "n_invalid": 0,
+    "n_profiles": 99,
+    "n_profiles_in_range": 25,
+    "n_wave_profiles": 92,
+    "pulse": {
+      "accel": 1.5,
+      "decel": -3.0,
+      "hold_low": 10.0,
+      "tail": 240.0,
+      "v0": 25.0,
+      "v_low": 10.0
+    },
+    "s_init_converged_share": 0.8282828282828283,
+    "settled_share": 1.0,
+    "settled_share_in_range": 1.0,
+    "speed_range": [
+      2.52,
+      26.61
+    ],
+    "wave_speed": -2.8193948137546463,
+    "wave_speed_100": -3.6762157132649778,
+    "wave_speed_in_range": -1.1553121321948236,
+    "wave_speed_pulse": 11.248334826727195,
+    "wave_speed_pulse_100": 13.324469578791104
+  }
+}

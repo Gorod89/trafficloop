@@ -74,8 +74,11 @@ python -m pytest -q
 ```
 
 Datasets scored in the benchmark: `ngsim`, `openacc`, `waymo_hu`, `follownet_highd`,
-`follownet_ngsim`, `tgsim` (`docs/data_layout.md`, `docs/licences.md`). Loaders tested on
-fabricated files only, pending access to the data: `ute`, `highd`, `exid`, `citysim`.
+`follownet_ngsim`, `tgsim` and, since 2026-11-17, `highd` (the benchmark's own extraction of raw
+highD; the dataset is given out on application and may not be redistributed, so its events,
+splits, per-event tables and checkpoints stay local and only aggregate numbers are in this
+repository; `docs/data_layout.md`, `docs/licences.md`). Loaders tested on fabricated files
+only, pending access to the data: `ute`, `exid`, `citysim`.
 
 `scripts/m1.py` runs the four steps of milestone 1 for one dataset; they are also available
 one by one:
@@ -97,6 +100,7 @@ only; their events must not be redistributed (`docs/licences.md`).
   `.github/workflows/leaderboard.yml` on every push; sources in `results/leaderboard/`)
 * `results/SUMMARY.md`: the findings in prose, with the caveats
 * `results/figures/`: the figures of the report (`python scripts/make_report.py`)
+* `docs/figures/`: the schematic of the benchmark and the figure of the string-stability test
 * `results/m1/`, `results/m2/`, `results/m3/`, `results/m4/`: the milestone reports;
   `results/m4/` holds one CSV per table, E1b (`e1_horizons.csv`, `e1_horizon_taus.csv`) and
   E3d (`e3_human_reference.csv`, `e3_human_taus.csv`, `e3_human_top3.csv`) included
@@ -104,10 +108,17 @@ only; their events must not be redistributed (`docs/licences.md`).
   runs are under `results/sweeps/models/` and never ranked
 * `results/models/<dataset>/<version>/<split>-fold<k>/<label>/seed<s>/`: one directory per
   run with `train.json` and the protocol summaries `p1.json` ... `p4.json`, `p1s.json` and
-  `p2h.json` (JSON in the repository; the per-event tables, the checkpoints except those of the kNN entries, the near-miss episodes, the split files and the OpenACC leader
-  profiles `data/scenarios/openacc_profiles.json` are release assets, see the release notes;
-  the human platoon profiles `data/scenarios/human_profiles.json` join them in the next
-  release)
+  `p2h.json` (JSON in the repository)
+* Release assets (see the release notes; the terms of each are in `NOTICE.md`):
+  `per_event_tables.tar.gz` and `short_window_tables.tar.gz` (the per-event and per-window
+  tables of the runs: event identifiers, sample counts and error sums, no series),
+  `splits.tar.gz` (the split files: event identifiers and their folds), `checkpoints.tar.gz`
+  (the trained models except those of the kNN entries, with `NOTICE.md` and the copy of the
+  Waymo Agreement), `openacc_profiles.json` (the OpenACC leader profiles,
+  `data/scenarios/openacc_profiles.json`), `human_profiles.json` (the human platoon windows of
+  P2h, `data/scenarios/human_profiles.json`) and `tgsim_nearmiss_reconstructed.tar.gz` (the
+  reconstructed TGSIM near-miss episodes). They cover the six datasets other than `highd`;
+  nothing of the runs on raw highD is among them.
   The FollowNet-highD events are not redistributed (the terms of highD forbid distributing the dataset or
   modified versions of it):
   `python scripts/download_data.py follownet --yes` fetches the figshare files of Chen et al. and

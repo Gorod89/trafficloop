@@ -1,0 +1,96 @@
+{
+  "class": "pidl",
+  "config_hash": "6d4ddb0ee076",
+  "data_version": "reconstructed",
+  "dataset": "highd",
+  "family": "network",
+  "git_revision": "bff18c8066137b539fe46eb027699b8cfdc12b9c",
+  "model": "pidl",
+  "n_parameters": 4486,
+  "seed": 0,
+  "split": {
+    "fold": 2,
+    "kind": "driver",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.1757981868348443,
+      "n_events": 2537,
+      "n_samples": 421111,
+      "rmse_s": 52.39596967675091,
+      "rmse_v": 3.1037955215708934
+    },
+    "p0": {
+      "rmse_a": 0.39178564314252845,
+      "rmse_s": 0.0039178434592121,
+      "rmse_v": 0.039178427744646964
+    }
+  },
+  "training": {
+    "best_val_rmse_a": 0.3854031218477038,
+    "config": {
+      "batch_size": 4096,
+      "batches_per_epoch": 200,
+      "closed_loop_batch": 512,
+      "closed_loop_horizon": 50,
+      "closed_loop_weight": 0.0,
+      "device": "cuda",
+      "epochs": 40,
+      "grad_clip": 1.0,
+      "lr": 0.001,
+      "patience": 6,
+      "seed": 0,
+      "val_batches": 50,
+      "weight_decay": 0.0
+    },
+    "epochs_run": 6,
+    "history": [
+      {
+        "epoch": 0,
+        "train_loss": 6.902469725608825,
+        "val_rmse_a": 0.5738057391199782
+      },
+      {
+        "epoch": 1,
+        "train_loss": 3.318568460941315,
+        "val_rmse_a": 0.5327157998360534
+      },
+      {
+        "epoch": 2,
+        "train_loss": 2.26366525888443,
+        "val_rmse_a": 0.49410968306695624
+      },
+      {
+        "epoch": 3,
+        "train_loss": 1.6913183492422104,
+        "val_rmse_a": 0.46046175699972225
+      },
+      {
+        "epoch": 4,
+        "train_loss": 1.3085735481977463,
+        "val_rmse_a": 0.4406464551206734
+      },
+      {
+        "epoch": 5,
+        "train_loss": 1.0647711157798767,
+        "val_rmse_a": 0.41717789992527393
+      }
+    ],
+    "initial_val_rmse_a": 0.3854031218477038,
+    "n_parameters": 4486,
+    "n_train_events": 8212,
+    "n_train_windows": 1369867,
+    "n_val_windows": 315490,
+    "physics": {
+      "params": {
+        "T": 1.5,
+        "a": 1.0000001192092896,
+        "b": 1.5,
+        "s0": 1.999999761581421,
+        "v0": 33.29999923706055
+      }
+    },
+    "seconds": 5.1
+  }
+}

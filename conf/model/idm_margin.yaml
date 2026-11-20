@@ -1,0 +1,9 @@
+# Margin core of the certified hybrid as an exploratory entry (decision REV4-1 in docs/decisions.md):
+# the IDM with the parameters of certificate.core of the residual_idm_certified run of the same dataset,
+# split, fold and seed. The parameters are read from that run by scripts/margin_core.py and never
+# calibrated here: do not train this entry with scripts/train.py. Its runs live in
+# results/exploratory/margin_core, never in results/models.
+name: idm
+label: idm_margin
+kwargs: {}
+optim: {}

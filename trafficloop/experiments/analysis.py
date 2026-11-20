@@ -71,9 +71,10 @@ GROUP = "follower_id"
 REFERENCE = "persistence"
 #: the eight-model subset of E2 and E4 (decision M4-2); persistence is evaluated next to it
 SUBSET = ("idm", "gipps", "mlp", "lstm", "mlp_loop", "lstm_loop", "ddpg", "stability_mlp")
-MAIN_DATASETS = ("ngsim", "follownet_highd")
+#: `highd` (raw highD, decision HD-2) joined on 2026-11-17; until then `follownet_highd` stood for it (D12)
+MAIN_DATASETS = ("ngsim", "follownet_highd", "highd")
 LEAK_DATASETS = ("ngsim", "openacc")
-TRANSFER_DATASETS = ("ngsim", "follownet_highd", "openacc", "waymo_hu", "follownet_ngsim", "tgsim")
+TRANSFER_DATASETS = ("ngsim", "follownet_highd", "openacc", "waymo_hu", "follownet_ngsim", "tgsim", "highd")
 SEEDS = (0, 1, 2)
 FOLDS = (0, 1, 2, 3, 4)
 CLEAN, LEAKY = "paired-clean", "paired-leaky"
@@ -127,7 +128,8 @@ MEAN_RANK = "mean_normalised_rank"
 E1_COLUMNS = ["dataset", "model", "family", "rmse_a", "ratio", "low", "high", "n_drivers",
               "seed_min", "seed_max", "n_seeds", "folds_min", "folds_max", "n_folds"]
 E2_COLUMNS = ["dataset", "subset", "model", "family", "metric", "clean", "leaky", "inflation", "mean_difference", "low",
-              "high", "p_bootstrap", "p_wilcoxon", "p_holm", "n_drivers", "n_affected_drivers", "n_events", "n_folds"]
+              "high", "p_bootstrap", "p_wilcoxon", "p_holm", "p_holm_wilcoxon", "n_drivers", "n_affected_drivers", "n_events",
+              "n_folds"]
 E2_CLASS_COLUMNS = ["dataset", "subset", "metric", "family", "mean_inflation", "min_inflation", "max_inflation",
                     "mean_difference", "n_models"]
 E2_UNPAIRED_COLUMNS = ["dataset", "model", "family", "metric", "driver", "event", "inflation", "difference",
@@ -459,7 +461,8 @@ def e2_paired(root, dataset: str, labels: Sequence[str] = SUBSET, n_boot: int = 
     both arms are concatenated (the test drivers of the folds are distinct) and compared with
     :func:`~trafficloop.stats.paired_difference` (``clean - leaky``: positive when the leak lowers
     the error); ``inflation = (clean - leaky) / clean``; ``p_holm`` is the Holm adjustment of
-    ``p_bootstrap`` over the models of a dataset, subset and metric. ``subset`` is ``all`` (every
+    ``p_bootstrap`` over the models of a dataset, subset and metric, ``p_holm_wilcoxon`` that of
+    ``p_wilcoxon`` over the same family. ``subset`` is ``all`` (every
     probe event) or ``affected`` (the probe events of the drivers of ``affected[fold]``, those with
     a leak event in the leaky training part; ``"auto"`` reads them with
     :func:`affected_followers`, ``None`` leaves the subset out).
@@ -511,6 +514,8 @@ def e2_paired(root, dataset: str, labels: Sequence[str] = SUBSET, n_boot: int = 
         for block in blocks.values():
             for row, p in zip(block, holm([row["p_bootstrap"] for row in block])):
                 row["p_holm"] = float(p)
+            for row, p in zip(block, holm([row["p_wilcoxon"] for row in block])):
+                row["p_holm_wilcoxon"] = float(p)
             rows += block
     frame = pd.DataFrame(rows, columns=E2_COLUMNS)
     order = {name: i for i, name in enumerate(E2_SUBSETS)}
@@ -577,8 +582,15 @@ def _composite(frame: pd.DataFrame) -> np.ndarray:
     return composite_score(inputs)["composite"].reindex(inputs.index).to_numpy(dtype=np.float64)
 
 
-def e3_rankings(root, dataset: str, labels: Sequence[str] | None = None) -> pd.DataFrame:
-    """E3: the metrics of every model on fold 0, seed 0 of the driver split (lower is better).
+#: views of the three P2 inputs of :func:`e3_rankings`: the ``p2.json`` key suffix of each
+P2_VIEWS = {"in_range": "_in_range", "all": ""}
+
+
+def e3_rankings(root, dataset: str, labels: Sequence[str] | None = None, fold: int = 0, seed: int = 0,
+                split: str = "driver", p2_view: str = "in_range") -> pd.DataFrame:
+    """E3: the metrics of every model on fold 0, seed 0 of the driver split (lower is better;
+    ``fold`` and ``seed`` choose another run of the driver split, as in E3f, and ``split`` another
+    split, as for the block run of the run statistics of E3f).
 
     P0 ``rmse_a`` and the whole event (``rmse_s``, ``rmse_v``) from ``train.json`` (the tables
     ``test_p0`` and ``test_closed_loop`` of the current checkpoint; the whole event of ``p1.json``
@@ -587,11 +599,21 @@ def e3_rankings(root, dataset: str, labels: Sequence[str] | None = None) -> pd.D
     collision rates, and the composite (:func:`~trafficloop.protocols.composite.composite_score`
     on the in-range inputs, as in milestone 3). ``stale`` lists the protocol files computed from
     an earlier checkpoint (:func:`stale_protocols`).
+
+    ``p2_view`` (exploratory, decision REV5-1): ``in_range`` (default, the registered composite) reads
+    ``concave_growth_error_in_range``, ``hysteresis_error_in_range`` and ``collisions_100_in_range``;
+    ``all`` reads the same keys without the suffix, computed by protocol P2 over every leader profile
+    (the recorded profiles for the two errors, every profile with the synthetic pulse for the
+    collisions). The other columns do not depend on it.
     """
-    labels = run_labels(root, dataset) if labels is None else [m for m in labels if (run_dir(root, dataset, m) / "train.json").exists()]
+    if p2_view not in P2_VIEWS:
+        raise KeyError(f"unknown p2_view {p2_view!r}; views: {list(P2_VIEWS)}")
+    suffix = P2_VIEWS[p2_view]
+    labels = (run_labels(root, dataset, split, fold=fold, seed=seed) if labels is None
+              else [m for m in labels if (run_dir(root, dataset, m, split, fold=fold, seed=seed) / "train.json").exists()])
     rows = []
     for label in labels:
-        d = run_dir(root, dataset, label)
+        d = run_dir(root, dataset, label, split, fold=fold, seed=seed)
         train = _json(d / "train.json")
         p1, p2, p3, p4 = (_summary(d, name) for name in ("p1", "p2", "p3", "p4"))
         row = {"dataset": dataset, "model": label, "family": train.get("family"), "p0_rmse_a": _num(train, "test", "p0", "rmse_a")}
@@ -600,9 +622,9 @@ def e3_rankings(root, dataset: str, labels: Sequence[str] | None = None) -> pd.D
                 row[f"p1_{h}_rmse_{x}"] = _num(p1, h, f"rmse_{x}")
         for x in ("s", "v"):
             row[f"p1_whole_rmse_{x}"] = _num(train, "test", "closed_loop_whole_event", f"rmse_{x}")
-        row["p2_concave_growth_error"] = _num(p2, "concave_growth_error_in_range")
-        row["p2_hysteresis_error"] = _num(p2, "hysteresis_error_in_range")
-        row["p2_collisions_100"] = _num(p2, "collisions_100_in_range")
+        row["p2_concave_growth_error"] = _num(p2, f"concave_growth_error{suffix}")
+        row["p2_hysteresis_error"] = _num(p2, f"hysteresis_error{suffix}")
+        row["p2_collisions_100"] = _num(p2, f"collisions_100{suffix}")
         row["p3_unstable_fraction"] = _num(p3, "unstable_fraction")
         row["p4_collision_rate_synthetic"] = _num(p4, "collision_rate_synthetic_in_range")
         row["p4_collision_rate_empirical"] = _num(p4, "collision_rate_empirical")

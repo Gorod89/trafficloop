@@ -12,7 +12,13 @@ restricts E1 and E3 to the reference models of the main campaign (``MODELS`` of
 ``models=all`` takes every finished run. Writes ``REPORT.md``, ``e1_ratios.csv``,
 ``e2_paired.csv``, ``e2_unpaired.csv``, ``e3_rankings.csv``, ``e3_kendall.csv`` (with the
 spacing-against-speed rows), ``e3_composite_variants.csv``, ``e3_composite_sensitivity.csv``,
-``e3_pareto.csv``, ``e4_transfer.csv``, ``e1_horizons.csv`` and ``e1_horizon_taus.csv`` (E1b), ``e3_human_reference.csv``, ``e3_human_taus.csv`` and ``e3_human_top3.csv`` (E3d), ``e3_within_family.csv`` (E3e).
+``e3_pareto.csv``, ``e4_transfer.csv``, ``e1_horizons.csv`` and ``e1_horizon_taus.csv`` (E1b), ``e3_human_reference.csv``, ``e3_human_taus.csv`` and ``e3_human_top3.csv`` (E3d), ``e3_within_family.csv`` (E3e), ``e3f_missing_rule.csv``, ``e3f_tau_bias.csv``,
+``e3f_collision_gate.csv``, ``e3f_leave_one_out.csv``, ``e3f_leave_one_out_entries.csv``,
+``e3f_seed_fold.csv``, ``e3f_h53_rule.csv``, ``e3f_h51_rule.csv`` and ``e3f_run_statistics.csv`` (E3f,
+exploratory robustness checks of tau(P0, composite) and the registered rules H5.1 and H5.3, and the
+statistics of H5.1, H5.3 and H5.4 in the other training runs and the block run of ``highd``), and
+``e3h_h51_one_step.csv``, ``e3h_h53_all_profiles.csv`` and ``e3h_group_contrast.csv`` (E3h, the exploratory
+further checks, decision REV5-1).
 """
 
 from __future__ import annotations
@@ -27,6 +33,7 @@ import pandas as pd
 from trafficloop.experiments import analysis as an
 from trafficloop.experiments import horizons as hz
 from trafficloop.experiments import human_reference as hr
+from trafficloop.experiments import robustness as rb
 from trafficloop.experiments import within_family as wf
 from trafficloop.utils import REPO_ROOT, resolve_path
 
@@ -37,7 +44,7 @@ def _shown(path: Path) -> str:
     return path.relative_to(REPO_ROOT).as_posix() if path.is_relative_to(REPO_ROOT) else path.as_posix()
 
 FAMILY_ORDER = {"baseline": 0, "mechanistic": 1, "network": 2}
-P_COLUMNS = {"p", "p_bootstrap", "p_wilcoxon", "p_holm"}
+P_COLUMNS = {"p", "p_bootstrap", "p_wilcoxon", "p_holm", "p_holm_wilcoxon"}
 #: E3 columns shown in the report (all of them are in e3_rankings.csv)
 E3_SHOWN = {
     "p0_rmse_a": "P0", "p1_h10_rmse_s": "P1 h10", "p1_h30_rmse_s": "P1 h30", "p1_whole_rmse_s": "P1 whole",
@@ -259,7 +266,8 @@ def section_e2(root: Path, n_boot: int, seed: int, splits: Path, events: Path) -
             "Paired design (decision R2): both arms scored on the same probe events of folds 0-4, pooled; `inflation` = (clean - "
             "leaky) / clean (positive: the leak lowers the error); `mean_difference` (clean - leaky), its interval and `p_bootstrap` "
             f"from `paired_difference` ({n_boot} driver replicates, common random numbers), `p_wilcoxon` the signed-rank test on the "
-            "per-driver differences, `p_holm` the Holm adjustment of `p_bootstrap` over the models of a dataset, subset and metric. "
+            "per-driver differences, `p_holm` the Holm adjustment of `p_bootstrap` over the models of a dataset, subset and metric, "
+            "`p_holm_wilcoxon` that of `p_wilcoxon` over the same family. "
             "Subset `all`: every probe event; `affected`: the probe events of drivers with at least one event in the leaky "
             "training part of the same fold.\n")
     datasets = sorted(set(an.LEAK_DATASETS) | {d for k in an.FOLDS for d in an.run_datasets(root, an.CLEAN, k)})
@@ -291,7 +299,7 @@ def section_e2(root: Path, n_boot: int, seed: int, splits: Path, events: Path) -
                 if part.empty:
                     continue
                 text += f"\nSubset `{subset}`:\n\n" + table(part, ["model", "family", "metric", "clean", "leaky", "inflation", "mean_difference",
-                                                                   "low", "high", "p_bootstrap", "p_wilcoxon", "p_holm", "n_drivers", "n_events", "n_folds"])
+                                                                   "low", "high", "p_bootstrap", "p_wilcoxon", "p_holm", "p_holm_wilcoxon", "n_drivers", "n_events", "n_folds"])
             text += "\nClass means:\n\n" + table(an.e2_class_means(frame), ["subset", "metric", "family", "mean_inflation", "min_inflation",
                                                                          "max_inflation", "mean_difference", "n_models"])
         unpaired = an.e2_unpaired(root, dataset, an.SUBSET)
@@ -550,6 +558,234 @@ def section_e3e(e3: pd.DataFrame) -> tuple[str, pd.DataFrame]:
     return text + "\n" + table(frame), frame
 
 
+def section_e3g(e3: pd.DataFrame) -> tuple[str, pd.DataFrame, pd.DataFrame]:
+    """E3g: the entries by what they are fitted to (exploratory, added after the results)."""
+    text = ("\n## E3g: one-step accuracy and the composite by training objective (exploratory)\n\n"
+            "Added after the results (2026-11-16). The families of E3e differ in what their entries "
+            "are fitted to: the mechanistic entries are calibrated in closed loop on spacing and speed and never on the "
+            "one-step acceleration, most learned entries are trained on the one-step error. The entries are grouped by "
+            "objective (`trafficloop/experiments/within_family.py`, `OBJECTIVES`; the column \"training or calibration\" of the "
+            "entries table). Ranks are average ranks among the reference entries of the dataset (1 = best).\n")
+    if not len(e3):
+        return (text + "\nNot available.\n", pd.DataFrame(columns=wf.OBJECTIVE_RANK_COLUMNS),
+                pd.DataFrame(columns=wf.OBJECTIVE_TAU_COLUMNS))
+    ranks, taus = wf.objective_tables(e3)
+    text += "\n### Places by objective\n\nMedian (minimum, maximum) rank of the entries of each objective under P0 and under the composite.\n\n"
+    shown = ranks.assign(p0=[f"{m:g} ({lo:g}-{hi:g})" for m, lo, hi in zip(ranks["p0_rank_median"], ranks["p0_rank_min"], ranks["p0_rank_max"])],
+                         composite=[f"{m:g} ({lo:g}-{hi:g})" for m, lo, hi in
+                                    zip(ranks["composite_rank_median"], ranks["composite_rank_min"], ranks["composite_rank_max"])])
+    text += table(shown, ["dataset", "objective", "n_models", "p0", "composite"], {"p0": "P0 rank", "composite": "composite rank"})
+    text += ("\n### Rank agreement with the objective held fixed\n\n"
+             "Kendall's tau-b between the P0 ranking and the composite (over all entries, as in E3e) inside sets of entries "
+             "with one kind of objective; two-sided p-value of scipy's kendalltau, no interval (9 to 14 entries).\n\n")
+    text += table(taus)
+    return text, ranks, taus
+
+
+E3H_TABLES = {"h51_one_step": rb.H51_ONE_STEP_COLUMNS, "h53_all_profiles": rb.H53_VIEW_COLUMNS,
+              "group_contrast": wf.CONTRAST_COLUMNS}
+
+
+def section_e3h(root: Path, e1: pd.DataFrame, e3: pd.DataFrame) -> tuple[str, dict[str, pd.DataFrame]]:
+    """E3h: the three further checks (exploratory, decision REV5-1), the frames of their CSVs."""
+    text = ("\n## E3h: further checks (exploratory, decision REV5-1)\n\n"
+            "Added after the results (2026-11-17), from stored results only; no verdict depends on them. "
+            "Fold 0, seed 0 of the driver split.\n")
+    out = {name: pd.DataFrame(columns=columns) for name, columns in E3H_TABLES.items()}
+    labels = main_labels()
+    in_e3 = list(dict.fromkeys(e3["dataset"])) if len(e3) else []
+    main = [d for d in an.MAIN_DATASETS if d in in_e3]
+    if labels is None or not in_e3:
+        return text + "\nNot available: no E3 rankings of the main campaign.\n", out
+    if len(e1):
+        out["h51_one_step"] = rb.h51_one_step_table(e1[e1["dataset"].isin(main)])
+    out["h53_all_profiles"] = pd.concat([rb.h53_views_table(root, d, list(labels)) for d in main], ignore_index=True) \
+        if main else out["h53_all_profiles"]
+    out["group_contrast"] = wf.group_contrast_table(e3[e3["dataset"].isin(an.TRANSFER_DATASETS)])
+    h51 = out["h51_one_step"]
+    text += ("\n### (a) H5.1 on the entries with a one-step objective\n\n"
+             "The counts of the registered rule H5.1 (`h51_table`) over the ten entries of the group \"one-step objective\" of "
+             "`OBJECTIVES` only, from the P0 ratios of E1 (model / persistence): `n_within_10` (0.9 <= ratio <= 1.1), "
+             "`n_ci_within_10` (interval inside [0.9, 1.1]), `n_better_30` (ratio < 0.7), `n_worse_30` (ratio > 1.3), "
+             "`n_beyond_30` their sum; `ratios` lists every entry.\n\n")
+    text += table(h51.assign(ci=_ci(h51, "best_low", "best_high")),
+                  ["dataset", "n_models", "n_within_10", "n_ci_within_10", "n_better_30", "n_worse_30", "n_beyond_30", "best_model",
+                   "best_ratio", "ci", "ratios"], {"ci": "best 95% CI"})
+    h53 = out["h53_all_profiles"]
+    text += ("\n### (b) H5.3 with the P2 inputs over all leader profiles\n\n"
+             "The composite (`last` rule over all entries) with the concave-growth error, the hysteresis error and the "
+             "100-vehicle collisions of P2 taken over every leader profile (the keys of `p2.json` without the suffix "
+             "`_in_range`; `p2_view = all`) next to the registered in-range composite (`in_range`); the unstable fraction is "
+             "unchanged. `tau`, `p`: Kendall's tau-b between the P0 ranking and the composite; `h53_dropped_*`: entries of the "
+             "top three by the one-step and by the whole-event error not in the composite top three (point values); "
+             "`missing_p2`: entries without one of the three P2 inputs.\n\n")
+    text += table(h53, ["dataset", "p2_view", "n_models", "tau", "p", "top3_composite", "p0_top3", "h53_dropped_p0", "whole_top3",
+                        "h53_dropped_whole", "missing_p2"])
+    contrast = out["group_contrast"]
+    text += ("\n### (c) Contrast between the groups of training objective\n\n"
+             f"tau(P0, composite) over all entries (`tau_observed`, as in E3) and over {wf.N_PERMUTATIONS} permutations of the "
+             "composite values inside each group of `OBJECTIVES` (one generator seeded with 0 per dataset; a missing value "
+             "ranks last and moves with its value): the mean (`tau_perm_mean`), the 2.5 % and 97.5 % quantiles, the share of "
+             "permutations with tau at or below the observed one, counting the observed arrangement once ((k + 1) / (n + 1)), "
+             "and mean / observed; `groups` gives the group sizes.\n\n")
+    text += table(contrast.assign(ci=_ci(contrast, "tau_perm_low", "tau_perm_high")),
+                  ["dataset", "n_models", "tau_observed", "tau_perm_mean", "ci", "share_at_or_below", "ratio_mean_observed", "groups"],
+                  {"ci": "permutation 95% range"})
+    return text, out
+
+
+E3F_TABLES = ("missing_rule", "tau_bias", "collision_gate", "collision_input", "collision_input_entries", "stability_rule", "leave_one_out",
+              "leave_one_out_entries", "input_ablation", "seed_fold", "h53_rule", "h51_rule", "run_statistics")
+E3F_EMPTY = {"missing_rule": rb.MISSING_COLUMNS, "tau_bias": rb.BIAS_COLUMNS, "collision_gate": rb.GATE_COLUMNS,
+             "collision_input": rb.COLLISION_INPUT_COLUMNS, "collision_input_entries": rb.COLLISION_ENTRY_COLUMNS,
+             "stability_rule": rb.STABILITY_RULE_COLUMNS,
+             "leave_one_out": rb.LOO_COLUMNS, "leave_one_out_entries": rb.LOO_ENTRY_COLUMNS,
+             "input_ablation": rb.INPUT_COLUMNS, "seed_fold": rb.SEED_FOLD_COLUMNS,
+             "h53_rule": rb.H53_COLUMNS, "h51_rule": rb.H51_COLUMNS, "run_statistics": rb.RUN_STAT_COLUMNS}
+
+
+def _ci(frame: pd.DataFrame, low: str, high: str) -> list[str]:
+    return [interval(lo, hi) for lo, hi in zip(frame[low], frame[high])]
+
+
+def section_e3f(root: Path, n_boot: int, seed: int, e1: pd.DataFrame, kendall: pd.DataFrame) -> tuple[str, dict[str, pd.DataFrame]]:
+    """E3f: robustness of tau(P0, composite) (exploratory, added after the results), the frames of its CSVs."""
+    text = ("\n## E3f: robustness of tau(P0, composite) (exploratory)\n\n"
+            "Added after the results (2026-11-16); none of these checks was registered in advance. All "
+            "taus are Kendall's tau-b over a fixed set of entries of the main campaign (the 25 reference entries, or the "
+            "subset named), fold 0 and seed 0 of the driver split unless stated otherwise. One call of `e3_replicates` per "
+            f"dataset ({n_boot} replicates, seed {seed}) gives the replicates of P0, the whole-event P1 error and the four "
+            "composite inputs, shared by every treatment below.\n")
+    labels = main_labels()
+    frames: dict[str, list[pd.DataFrame]] = {name: [] for name in E3F_TABLES}
+    in_e3 = set(kendall["dataset"]) if len(kendall) else set()
+    datasets = [d for d in an.TRANSFER_DATASETS if labels is not None and d in in_e3]
+    for dataset in datasets:
+        started = time.time()
+        for name, frame in rb.e3f_dataset(root, dataset, list(labels), n_boot, seed).items():
+            frames[name].append(frame)
+        if dataset in an.MAIN_DATASETS:
+            frames["run_statistics"].append(rb.run_statistics_table(root, dataset, list(labels), extra=rb.EXTRA_RUNS.get(dataset, ())))
+        print(f"E3f {dataset}: {time.time() - started:.1f} s", flush=True)
+    if labels is not None and len(e1):
+        frames["h51_rule"].append(rb.h51_table(e1[e1["dataset"].isin(datasets)], labels))
+    out = {name: pd.concat(parts, ignore_index=True) if parts else pd.DataFrame(columns=E3F_EMPTY[name])
+           for name, parts in frames.items()}
+    if not datasets:
+        return text + "\nNot available: no dataset of the transfer set with E3 rankings of the main campaign.\n", out
+    missing, bias = out["missing_rule"], out["tau_bias"]
+    check = rb.reproduction_check(missing, kendall)
+    worst = float(np.nanmax(check[["tau", "low", "high"]].to_numpy(dtype=np.float64))) if len(check) else float("nan")
+    text += ("\n### Missing-input rule and set of entries\n\n"
+             "`last`: the rule of the composite (a missing input ranks last among the set); `skip`: every input is ranked "
+             "among the entries of the set that have it and an entry is averaged over the inputs it has. Sets: all 25 "
+             "entries, without the two baselines (23), and the entries with all four inputs (`complete`; the inputs missing "
+             "are P3 unstable fractions, listed per dataset). Replicate r recomputes the composite with the treatment from "
+             "the r-th replicates of the inputs of the set. `low`/`high`: 95 % percentile interval; `share_below`: share of "
+             "replicate taus strictly below the point tau; `BC`: bias-corrected percentile interval (z0 from that share). "
+             f"The `published` rows reproduce tau, low and high of the P0-composite rows of E3 (largest absolute difference "
+             f"{worst:.1e}).\n\n")
+    text += table(missing.assign(ci=_ci(missing, "low", "high"), bc=_ci(missing, "bc_low", "bc_high")),
+                  ["dataset", "treatment", "n_models", "n_missing_stability", "tau", "p", "ci", "tau_boot_median", "share_below",
+                   "bc", "top3"], {"ci": "95% CI", "bc": "BC 95% CI", "tau_boot_median": "median"})
+    lacking = missing[missing["treatment"] == "published"]
+    text += "\nEntries without the stability input: " + "; ".join(
+        f"{d}: {m}" for d, m in zip(lacking["dataset"], lacking["missing_stability"])) + ".\n"
+    text += ("\n### Point estimate and bootstrap distribution of the published taus\n\n"
+             "The same statistics for tau(P0, composite), tau(P0, P3 unstable) and tau(P1 whole, composite) of E3 (all "
+             "entries, a missing value last): where the point tau lies at the edge of the percentile interval, the share "
+             "of replicates below it and the bias-corrected interval show the asymmetry of the bootstrap distribution.\n\n")
+    text += table(bias.assign(ci=_ci(bias, "low", "high"), bc=_ci(bias, "bc_low", "bc_high")),
+                  ["dataset", "ranking_a", "ranking_b", "tau", "ci", "tau_boot_mean", "tau_boot_median", "share_below", "bc"],
+                  {"ci": "95% CI", "bc": "BC 95% CI", "tau_boot_mean": "mean", "tau_boot_median": "median"})
+    gate = out["collision_gate"]
+    text += ("\n### Collision gate\n\n"
+             "An entry is admissible when its share of colliding followers in the in-range P2 profiles, "
+             "`collisions_100 / (100 n)` with n = `n_profiles_in_range` of `p2.json` (the synthetic braking pulse included, as "
+             "in the collision input), is at most theta (no collision value: inadmissible). Gated score = composite (`last` "
+             "rule on the set) + 1 for an inadmissible entry: every admissible entry ranks before every inadmissible one and "
+             "the composite orders each group. The gate is re-evaluated in every replicate from the replicate collisions "
+             "(the denominator stays 100 n).\n\n")
+    text += table(gate.assign(ci=_ci(gate, "low", "high")),
+                  ["dataset", "set", "theta", "n_models", "n_followers", "n_admissible", "top3", "tau", "p", "ci"], {"ci": "95% CI"})
+    variants, per_entry = out["collision_input"], out["collision_input_entries"]
+    text += ("\n### The collision input\n\n"
+             "The collision input counts the followers whose own gap closes (`followers`); a collided vehicle keeps driving. "
+             "Followers that do not react to their leader (persistence, constant speed) therefore count one collision per "
+             "profile, that of the first follower, and the input rewards the absence of a reaction. Two replacements from "
+             "`p2.vehicles.parquet` (in-range profiles, 100 followers): `blocked`, the followers at or behind the first "
+             "colliding one, and `profiles`, the profiles with at least one collision. tau(P0, composite) with the input "
+             "replaced (`last` rule), over all entries and without the baselines; the profile draws of the replicates are "
+             "those of E3 (the `followers` rows reproduce the published composite).\n\n")
+    text += table(variants.assign(ci=_ci(variants, "low", "high")),
+                  ["dataset", "set", "input", "n_models", "tau", "p", "ci", "tau_boot_median", "top3"],
+                  {"ci": "95% CI", "tau_boot_median": "median"})
+    baselines = per_entry[per_entry["family"] == "baseline"]
+    text += ("\nThe baselines under the three measures (value summed over the in-range profiles; composite rank among all "
+             "entries); every entry: `e3f_collision_input_entries.csv`.\n\n")
+    text += table(baselines, ["dataset", "model", *rb.COLLISION_INPUTS, *(f"rank_{k}" for k in rb.COLLISION_INPUTS)])
+    rules = out["stability_rule"]
+    text += ("\n### The stability verdict\n\n"
+             "The protocol calls an equilibrium unstable when the maximal gain exceeds 1 + 1e-5 (`published`). A model that "
+             "passes a perturbation on unchanged (a pure time shift such as Newell's: gain one at every frequency, 0.9995 at "
+             "0.1 Hz in the discrete simulation) is stable under this rule. Two other rules from the saved gains of "
+             "`p3.speeds.parquet`: `tolerance 1e-3` (maximal gain above 1 + 1e-3) and `neutral counts as unstable` (unstable "
+             f"under the published rule, or a gain at 0.1 Hz above 1 - {rb.NEUTRAL_EPS:g}). tau(P0, composite) with the unstable "
+             "fraction recomputed under each rule; `changed`: entries whose unstable fraction differs from the published one. "
+             "The speed draws of the replicates are those of E3.\n\n")
+    text += table(rules.assign(ci=_ci(rules, "low", "high")),
+                  ["dataset", "set", "rule", "n_models", "n_changed", "changed", "tau", "p", "ci", "top3"], {"ci": "95% CI"})
+    text += ("\n### Leave one entry out\n\n"
+             "tau(P0, composite `last`) recomputed on the 24 other entries for each entry (point values; the composite is "
+             "re-ranked on the 24). Per entry: `e3f_leave_one_out_entries.csv`.\n\n")
+    text += table(out["leave_one_out"])
+    inputs = out["input_ablation"]
+    text += ("\n### Leave one input out\n\n"
+             "tau(P0, composite) when one of the four inputs is left out of the composite: the mean normalised rank of the "
+             "three others (a missing value last), over all entries and without the baselines; `none` is the composite "
+             "itself. Replicate r recomputes the three-input composite from the r-th replicates of its inputs.\n\n")
+    text += table(inputs.assign(ci=_ci(inputs, "low", "high")),
+                  ["dataset", "set", "left_out", "n_models", "tau", "p", "ci", "tau_boot_median", "top3"],
+                  {"ci": "95% CI", "tau_boot_median": "median"})
+    text += ("\n### Training seeds and folds\n\n"
+             "Point tau(P0, composite `last`) on the main datasets for the runs of other seeds (fold 0) and other folds "
+             "(seed 0) of the driver split, over the entries with `train.json`, `p2.json` and `p3.json` of that run (the "
+             "composite recomputed on them; `missing` lists the others).\n\n")
+    text += table(out["seed_fold"])
+    text += ("\n### Statistics of the registered tests in the other training runs (exploratory; the verdicts are those of fold 0, "
+             "seed 0)\n\n"
+             "Point values, no intervals, for every run of the seed and fold check on the main datasets and, on `highd`, the run "
+             "under the split by blocks of recordings (fold 0, seed 0; decision HD-5). These runs cannot change the verdicts. "
+             "Entries: those with `train.json`, `p1.json`, `p2.json` and `p3.json` of that run (`missing`: the others). `tau`, "
+             "`top3`: tau(P0, composite `last`) and the composite top three over all of them. H5.3: `p0_top3` and `whole_top3`, "
+             "the three most accurate entries by the one-step error and by the whole-event closed-loop spacing error, and "
+             "`h53_dropped_*`, how many of them are not in the composite top three. H5.1: over the `h51_n` entries that are not "
+             "baselines, the ratio of the P0 error (`train.json`) to that of persistence in the same run: `h51_within10` "
+             "(0.9 <= ratio <= 1.1), `h51_beyond30` (ratio < 0.7 or > 1.3; split into `h51_better30` and `h51_worse30`), and "
+             "the smallest ratio. H5.4: tau between the rankings by spacing and by speed error of P1 at 10 s, 30 s and over the "
+             "whole event (a missing value last). Every column: `e3f_run_statistics.csv`.\n\n")
+    text += table(out["run_statistics"], ["dataset", "split", "fold", "seed", "n_models", "tau", "top3", "h53_dropped_p0",
+                                          "h53_dropped_whole", "h51_n", "h51_within10", "h51_beyond30", "h51_best", "h51_best_ratio",
+                                          "h54_tau_h10", "h54_tau_h30", "h54_tau_whole"])
+    text += ("\n### Registered rule H5.3\n\n"
+             "\"By the composite at least 2 of the 3 best models by trajectory RMSE drop out of the top three; refuted when the "
+             "top threes coincide.\" `dropped`: entries of the trajectory top three (P0 or whole-event P1) not in the "
+             "composite top three (`last` rule on the set; ties broken by model name); `p_boot_ge2` and `p_boot_coincide`: "
+             "shares of replicates with dropped >= 2 and dropped = 0.\n\n")
+    text += table(out["h53_rule"], ["dataset", "set", "trajectory", "n_models", "top3_trajectory", "top3_composite", "dropped",
+                                    "p_boot_ge2", "p_boot_coincide"])
+    h51 = out["h51_rule"]
+    text += ("\n### Registered rule H5.1\n\n"
+             "\"Persistence within 10 % of the one-step models; refuted by a gap above 30 %.\" From the P0 ratios of E1 "
+             "(model / persistence, 95 % driver-bootstrap interval) over the 23 entries that are not baselines and over the "
+             "learned entries only: `n_within_10` (0.9 <= ratio <= 1.1), `n_ci_within_10` (interval inside [0.9, 1.1]), "
+             "`n_better_30` (ratio < 0.7), `n_better_ci` (interval below 1), `n_worse_30` (ratio > 1.3).\n\n")
+    text += table(h51.assign(ci=_ci(h51, "best_low", "best_high")),
+                  ["dataset", "group", "n_models", "n_within_10", "n_ci_within_10", "n_better_30", "n_better_ci", "n_worse_30",
+                   "best_model", "best_ratio", "ci"], {"ci": "best 95% CI"})
+    return text, out
+
+
 def section_e4(root: Path, n_boot: int, seed: int) -> tuple[str, pd.DataFrame]:
     text = ("\n## E4: transfer (P5)\n\n"
             "Relative degradation `rmse_s(A -> B) / rmse_s(B -> B)` of P1 for every label (rows: model and training "
@@ -609,13 +845,20 @@ def main(argv: list[str] | None = None) -> Path:
     e3c_text, e3c = section_e3c(root)
     e3d_text, e3d, e3dt, e3dtop = section_e3d(root, labels_of)
     e3e_text, e3e = section_e3e(e3)
+    e3f_text, e3f = section_e3f(root, n_boot, seed, e1, e3k)
+    e3g_text, e3g_ranks, e3g_taus = section_e3g(e3)
+    e3h_text, e3h = section_e3h(root, e1, e3)
     e4_text, e4 = section_e4(root, n_boot, seed)
     out.mkdir(parents=True, exist_ok=True)
-    (out / "REPORT.md").write_text(text + campaigns + e1_text + e1b_text + e2_text + e3_text + e3b_text + e3c_text + e3d_text + e3e_text + e4_text, encoding="utf-8")
+    (out / "REPORT.md").write_text(text + campaigns + e1_text + e1b_text + e2_text + e3_text + e3b_text + e3c_text + e3d_text + e3e_text
+                                   + e3f_text + e3g_text + e3h_text + e4_text, encoding="utf-8")
     for name, frame in (("e1_ratios", e1), ("e1_horizons", e1b), ("e1_horizon_taus", e1bt), ("e2_paired", e2), ("e2_unpaired", e2u), ("e3_rankings", e3), ("e3_kendall", e3k),
                         ("e3_composite_variants", e3v), ("e3_composite_sensitivity", e3s), ("e3_pareto", e3p),
                         ("e3_ablations", e3c), ("e3_human_reference", e3d), ("e3_human_taus", e3dt),
-                        ("e3_human_top3", e3dtop), ("e3_within_family", e3e), ("e4_transfer", e4)):
+                        ("e3_human_top3", e3dtop), ("e3_within_family", e3e), ("e3_objective_ranks", e3g_ranks),
+                        ("e3_objective_taus", e3g_taus), ("e4_transfer", e4),
+                        *((f"e3f_{name}", frame) for name, frame in e3f.items()),
+                        *((f"e3h_{name}", frame) for name, frame in e3h.items())):
         frame.to_csv(out / f"{name}.csv", index=False)
     print(f"report written to {out / 'REPORT.md'} ({time.time() - started:.0f} s): E1 {len(e1)} rows, E2 {len(e2)} paired and "
           f"{len(e2u)} unpaired rows, E3 {len(e3)} models and {len(e3k)} taus, E3b {len(e3s)} sensitivity rows, E4 {len(e4)} entries",

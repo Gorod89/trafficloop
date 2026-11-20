@@ -1,0 +1,22 @@
+dataset,set,n_models,tau,p,p_holm
+follownet_highd,one-step objective,10,-0.38646345903326834,0.12531568180831723,0.6265784090415861
+follownet_highd,"one-step objective, rollout or multi-step loss",14,-0.38891289659881634,0.054625947445687974,0.3823816321198158
+follownet_highd,"closed-loop calibration, policy or certified hybrid",9,0.02817180849095055,0.916511907863894,1.0
+follownet_ngsim,one-step objective,10,-0.24444444444444444,0.38071979717813054,0.8737450396825397
+follownet_ngsim,"one-step objective, rollout or multi-step loss",14,-0.18681318681318684,0.3879883441211566,0.7759766882423133
+follownet_ngsim,"closed-loop calibration, policy or certified hybrid",9,-0.36623351038235713,0.17295491798842066,1.0
+highd,one-step objective,10,-0.31462660248284624,0.2086677876982641,0.8346711507930564
+highd,"one-step objective, rollout or multi-step loss",14,-0.2777949261420117,0.16983239607358902,0.6909541577867528
+highd,"closed-loop calibration, policy or certified hybrid",9,0.02817180849095055,0.916511907863894,1.0
+ngsim,one-step objective,10,-0.6444444444444444,0.009148478835978836,0.06403935185185186
+ngsim,"one-step objective, rollout or multi-step loss",14,-0.2967032967032967,0.15716301603764402,0.6909541577867528
+ngsim,"closed-loop calibration, policy or certified hybrid",9,-0.3888888888888889,0.18018077601410934,1.0
+openacc,one-step objective,10,-0.28888888888888886,0.2912483465608466,0.8737450396825397
+openacc,"one-step objective, rollout or multi-step loss",14,-0.3000185202333726,0.13819083155735057,0.6909541577867528
+openacc,"closed-loop calibration, policy or certified hybrid",9,-0.1111111111111111,0.761414241622575,1.0
+tgsim,one-step objective,10,-0.5843065474681431,0.01955026909288553,0.1173016145573132
+tgsim,"one-step objective, rollout or multi-step loss",14,-0.38891289659881634,0.054625947445687974,0.3823816321198158
+tgsim,"closed-loop calibration, policy or certified hybrid",9,-0.4444444444444444,0.11943893298059964,0.8360725308641975
+waymo_hu,one-step objective,10,-0.044946657497549475,0.8574624419592412,0.8737450396825397
+waymo_hu,"one-step objective, rollout or multi-step loss",14,0.04469901562676742,0.8258939952297807,0.8258939952297807
+waymo_hu,"closed-loop calibration, policy or certified hybrid",9,-0.1111111111111111,0.761414241622575,1.0

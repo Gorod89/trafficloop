@@ -142,7 +142,14 @@ profile over the manoeuvre window, for the prefixes 20 and 100:
    compared: `fd_error` = RMS over bins of the mean-flow difference [veh/h], `fd_error_rel`
    = RMS of the relative difference, `fd_bins_compared`. Pooled over all profiles.
 5. *Collisions*: `collisions_20`, `collisions_100` = followers with `s <= 0` at any simulated
-   sample, summed over all profiles (OpenACC and pulse).
+   sample, summed over all profiles (OpenACC and pulse). A collided vehicle keeps driving, so the
+   count is the number of followers whose own gap closes. Followers that do not react to their
+   leader therefore count one collision per profile, that of the first follower, while the
+   vehicles behind it keep their gaps to each other: the count rewards the absence of a reaction
+   (`persistence` and `constant_speed`: 8 to 17 on 1,000 to 2,000 followers of the in-range
+   profiles). E3f recomputes the composite with two other counts from `p2.vehicles.parquet`, the
+   followers at or behind the first colliding one and the profiles with at least one collision
+   (decision REV2-1); the composite of the leaderboard keeps the count defined here.
 6. `settled_share`: followers whose `|a| < 0.05 m/s^2` over the last 5 s of the hold.
 
 Summary keys: `concave_growth_error, hysteresis_error, growth_exponent_20,
@@ -236,6 +243,26 @@ holds the disturbance for the first 20 to 30 followers only (about 2 s per vehic
 disturbance travels within the window rather than how it grows; compare P2h with P2 on the
 recorded-follower errors, the 20-vehicle keys and the collisions. `fd_error` compares with the
 training data of the model, as in P2.
+
+### References and training data
+
+The references of P2, P2h and P4 are selected from all recorded data of their sources; no
+split is applied to them. For entries trained on the same source the reference therefore
+overlaps with the training part (driver split, fold 0):
+
+* P2: the 19 leader windows and their recorded followers come from AstaZero and ZalaZone runs
+  of OpenACC; 34 % of the OpenACC training events come from the same 19 files and 14 % overlap
+  a window in time. This concerns the P2 inputs of the composite of the entries trained on
+  OpenACC.
+* P2h: in all 40 NGSIM windows and in 55 of the 56 TGSIM windows at least one follower of the
+  chain also follows in a training event of that dataset (61 % and 66 % of the chain
+  followers); the two AstaZero windows are two of the P2 windows. This concerns the
+  human-referenced composites of the entries trained on NGSIM and TGSIM.
+* P4: 54 % of the followers of the 4,473 recorded TGSIM episodes follow in a TGSIM training
+  event. This concerns the recorded-episode collision rate of the entries trained on TGSIM.
+
+For entries trained on another source the references are foreign data; the registered tests
+(NGSIM, highD) use the P2 inputs behind OpenACC leaders.
 
 ## 3. P3: string stability (`protocols/p3.py`)
 

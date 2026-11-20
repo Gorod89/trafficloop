@@ -1,0 +1,43 @@
+dataset,objective,n_models,models,p0_rank_median,p0_rank_min,p0_rank_max,composite_rank_median,composite_rank_min,composite_rank_max
+follownet_highd,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,5.5,3.0,16.0
+follownet_highd,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",8.5,2.0,16.0,20.5,9.5,25.0
+follownet_highd,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",8.5,3.0,11.0,17.5,12.0,19.0
+follownet_highd,"policy (reward, adversarial)",2,"ddpg, gail",17.5,14.0,21.0,5.0,2.0,8.0
+follownet_highd,"calibrated core, certified residual",1,residual_idm_certified,20.0,20.0,20.0,1.0,1.0,1.0
+follownet_highd,none,2,"constant_speed, persistence",9.0,1.0,17.0,14.5,14.5,14.5
+follownet_ngsim,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,5.75,1.0,10.0
+follownet_ngsim,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",7.5,1.0,16.0,17.0,2.0,25.0
+follownet_ngsim,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",9.5,5.0,12.0,11.75,3.5,22.0
+follownet_ngsim,"policy (reward, adversarial)",2,"ddpg, gail",17.0,13.0,21.0,12.75,8.5,17.0
+follownet_ngsim,"calibrated core, certified residual",1,residual_idm_certified,20.0,20.0,20.0,13.0,13.0,13.0
+follownet_ngsim,none,2,"constant_speed, persistence",10.0,3.0,17.0,19.5,19.5,19.5
+highd,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,4.5,2.5,16.0
+highd,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",7.5,2.0,16.0,20.5,8.0,25.0
+highd,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",9.5,3.0,11.0,17.0,12.0,19.0
+highd,"policy (reward, adversarial)",2,"ddpg, gail",16.5,13.0,20.0,5.0,1.0,9.0
+highd,"calibrated core, certified residual",1,residual_idm_certified,21.0,21.0,21.0,6.0,6.0,6.0
+highd,none,2,"constant_speed, persistence",9.0,1.0,17.0,13.5,13.5,13.5
+ngsim,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,3.5,1.0,9.0
+ngsim,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",7.0,1.0,16.0,18.5,12.0,25.0
+ngsim,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",9.5,7.0,11.0,9.5,6.0,24.0
+ngsim,"policy (reward, adversarial)",2,"ddpg, gail",16.5,13.0,20.0,14.0,5.0,23.0
+ngsim,"calibrated core, certified residual",1,residual_idm_certified,21.0,21.0,21.0,10.0,10.0,10.0
+ngsim,none,2,"constant_speed, persistence",9.5,2.0,17.0,16.5,16.5,16.5
+openacc,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,3.5,1.0,9.0
+openacc,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",9.0,2.0,16.0,19.5,5.5,25.0
+openacc,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",8.5,3.0,10.0,16.0,11.5,22.5
+openacc,"policy (reward, adversarial)",2,"ddpg, gail",16.5,13.0,20.0,8.5,7.0,10.0
+openacc,"calibrated core, certified residual",1,residual_idm_certified,21.0,21.0,21.0,8.0,8.0,8.0
+openacc,none,2,"constant_speed, persistence",9.0,1.0,17.0,16.5,16.5,16.5
+tgsim,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,5.0,1.0,8.0
+tgsim,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",8.5,2.0,16.0,18.5,10.0,25.0
+tgsim,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",8.5,6.0,11.0,18.25,11.0,22.0
+tgsim,"policy (reward, adversarial)",2,"ddpg, gail",17.5,15.0,20.0,6.0,3.0,9.0
+tgsim,"calibrated core, certified residual",1,residual_idm_certified,21.0,21.0,21.0,5.0,5.0,5.0
+tgsim,none,2,"constant_speed, persistence",9.0,1.0,17.0,13.5,13.5,13.5
+waymo_hu,closed-loop calibration,6,"gipps, gipps_median, idm, idm_median, newell, newell_median",22.5,18.0,25.0,5.0,1.0,10.0
+waymo_hu,one-step objective,10,"diffusion, gru, knn, lstm, maml_lstm, mdn_lstm, mlp, perl, pidl, stability_mlp",8.5,2.0,16.0,17.75,11.0,25.0
+waymo_hu,rollout or multi-step loss,4,"gru_loop, lstm_loop, mlp_loop, seq2seq",8.5,3.0,11.0,19.75,9.0,23.5
+waymo_hu,"policy (reward, adversarial)",2,"ddpg, gail",17.0,14.0,20.0,6.5,5.0,8.0
+waymo_hu,"calibrated core, certified residual",1,residual_idm_certified,21.0,21.0,21.0,3.0,3.0,3.0
+waymo_hu,none,2,"constant_speed, persistence",9.0,1.0,17.0,14.5,14.5,14.5

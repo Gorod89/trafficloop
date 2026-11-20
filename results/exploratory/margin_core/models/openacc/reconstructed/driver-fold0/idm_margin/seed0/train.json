@@ -1,0 +1,52 @@
+{
+  "class": "idm",
+  "config_hash": "097ef1d68d41",
+  "data_version": "reconstructed",
+  "dataset": "openacc",
+  "exploratory": "decision REV4-1: not a reference entry, enters no ranking, test or leaderboard",
+  "family": "mechanistic",
+  "git_revision": "31967171f678409c62fe94c1e6f668b0559b3ce3",
+  "model": "idm_margin",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "driver",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0,
+      "n_events": 956,
+      "n_samples": 479894,
+      "rmse_s": 11.636456973334177,
+      "rmse_v": 1.0657444546741317
+    },
+    "p0": {
+      "rmse_a": 3.3168313285872473,
+      "rmse_s": 0.03276165365276485,
+      "rmse_v": 0.3276165519225548
+    }
+  },
+  "training": {
+    "calibrated": false,
+    "kind": "pooled with stability margin 0.2, read from residual_idm_certified (config hash 28b3fb607207)",
+    "params": {
+      "T": 0.9728758931159973,
+      "a": 3.5978665351867676,
+      "b": 0.5010905861854553,
+      "s0": 8.929681777954102,
+      "v0": 44.51961898803711
+    },
+    "scored_on": "cuda",
+    "seconds": 0.0,
+    "source": {
+      "config_hash": "28b3fb607207",
+      "git_revision": "5566c645825f64a3aee6b6de9711a23d8e02b095",
+      "kind": "pooled with stability margin",
+      "margin_min": 0.20131419342819967,
+      "run": "results/models/openacc/reconstructed/driver-fold0/residual_idm_certified/seed0",
+      "stability_margin": 0.2
+    }
+  }
+}

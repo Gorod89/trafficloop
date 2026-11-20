@@ -1,0 +1,52 @@
+{
+  "class": "idm",
+  "config_hash": "df9b4bb00fdc",
+  "data_version": "reconstructed",
+  "dataset": "waymo_hu",
+  "exploratory": "decision REV4-1: not a reference entry, enters no ranking, test or leaderboard",
+  "family": "mechanistic",
+  "git_revision": "31967171f678409c62fe94c1e6f668b0559b3ce3",
+  "model": "idm_margin",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "driver",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0,
+      "n_events": 171,
+      "n_samples": 27909,
+      "rmse_s": 5.7189554269211715,
+      "rmse_v": 0.9387482494678189
+    },
+    "p0": {
+      "rmse_a": 2.4876773098490106,
+      "rmse_s": 0.02411161959672088,
+      "rmse_v": 0.24111621706070718
+    }
+  },
+  "training": {
+    "calibrated": false,
+    "kind": "pooled with stability margin 0.2, read from residual_idm_certified (config hash f8b7a2000a6a)",
+    "params": {
+      "T": 1.2939987182617188,
+      "a": 1.759384036064148,
+      "b": 0.5041723847389221,
+      "s0": 3.2604854106903076,
+      "v0": 37.70819854736328
+    },
+    "scored_on": "cuda",
+    "seconds": 0.0,
+    "source": {
+      "config_hash": "f8b7a2000a6a",
+      "git_revision": "5566c645825f64a3aee6b6de9711a23d8e02b095",
+      "kind": "pooled with stability margin",
+      "margin_min": 0.2011995508454755,
+      "run": "results/models/waymo_hu/reconstructed/driver-fold0/residual_idm_certified/seed0",
+      "stability_margin": 0.2
+    }
+  }
+}

@@ -16,13 +16,13 @@ accelerations of a follower and its leader, i.e. trajectory data.
 
 | Source | Licence | Licence URL | Access | Raw data: redistribution | Derived events: redistribution | TrafficLoop publishes | Citation |
 |---|---|---|---|---|---|---|---|
-| FollowNet event sets (figshare) | CC0 1.0 label on all 26 articles; the NGSIM I-80 set inherits NGSIM's ShareAlike terms (note 3) and the HighD sets the terms of highD (note 1) | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | by the label; the upstream terms prevail (note 1) | by the label; the upstream terms prevail (note 1) | no events: every set is rebuilt locally from the figshare files (note 1) | Chen et al. 2023 [1], for the HighD sets also [7] |
+| FollowNet event sets (figshare) | CC0 1.0 label on all 26 articles; the NGSIM I-80 set inherits NGSIM's ShareAlike terms (note 3) and the HighD sets the terms of highD (note 1) | https://creativecommons.org/publicdomain/zero/1.0/ | open, direct download | by the label; the upstream terms prevail (note 1) | by the label; the upstream terms prevail (note 1) | no events: every set is rebuilt locally from the figshare files (note 1); scores, also per event with the event identifiers, and trained models | Chen et al. 2023 [1], for the HighD sets also [7] |
 | OpenACC (JRC) | CC BY 4.0 by the copyright notice in every campaign folder; the JRC catalogue names the European Commission reuse notice (note 9) | https://creativecommons.org/licenses/by/4.0/ | open, direct download | allowed with credit and changes indicated | allowed with credit and changes indicated | leader profiles and two manually driven platoon windows (release assets) | Makridis et al. 2021 [2] |
 | NGSIM (data.transportation.gov) | CC BY-SA 3.0 Unported (note 3) | https://creativecommons.org/licenses/by-sa/3.0/legalcode | open, Socrata API, no account | allowed under the same licence | adaptations: allowed under CC BY-SA 3.0 or a later version (note 3) | human platoon windows with reconstructed NGSIM chains (release asset), as CC BY-SA 4.0 | US DOT FHWA [3] |
-| Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | by the label, with credit; under the Waymo agreement only to registered users (note 2) | as for the raw data (note 2) | models trained on the pairs, as Distributed WOD Models with the notice, the Agreement and the attribution of note 2; no events | Hu et al. 2022 [4] |
+| Waymo car-following pairs, Hu et al. (Mendeley Data v3) | CC BY 4.0 | https://creativecommons.org/licenses/by/4.0/ | open, direct download (note 2) | by the label, with credit; under the Waymo agreement only to registered users (note 2) | as for the raw data (note 2) | models trained on the pairs, as Distributed WOD Models with the notice, the Agreement and the attribution of note 2; scores, also per event with the identifiers of the pairs (segment number and local vehicle number of Hu et al.) in the per-event tables and the split files; no events | Hu et al. 2022 [4] |
 | TGSIM (ITS DataHub) | no licence stated on 2026-11-16; U.S. public domain label on the portal until at least 2026-10-07 (note 4) | https://www.usa.gov/publicdomain/label/1.0/ | open, Socrata API, no account | not stated (note 4) | not stated (note 4) | near-miss episodes and human platoon windows with reconstructed TGSIM chains (release assets; note 4) | US DOT FHWA [5] |
 | UTE, Ubiquitous Traffic Eyes | none: no licence file; the README asks for a citation | https://github.com/Ruyi-Feng/Ubiquitous-Traffic-Eye | manual: Google Drive or Baidu links | unclear | unclear | code and check sums only | README [6] |
-| highD (levelXdata) | non-commercial use; the dataset and modified versions are not to be distributed (note 10) | https://levelxdata.com/highd-dataset/ | by application | forbidden | forbidden (modified versions) | extraction code, event check sums, scores and trained models as abstract representations (non-commercial use, citation of Krajewski et al.; `NOTICE.md`), never the events | Krajewski et al. 2018 [7] |
+| highD (levelXdata), raw and through the FollowNet-highD events | non-commercial use; the dataset and modified versions are not to be distributed (note 10) | https://levelxdata.com/highd-dataset/ | by application | forbidden | forbidden (modified versions) | raw highD (dataset `highd`, used locally under its terms): extraction code and aggregate numbers only (JSON summaries, the leaderboard page), no identifiers, tables, split files or checkpoints; FollowNet-highD events (read from figshare, note 1): event check sums, scores, also per event with the event identifiers (row numbers of the FollowNet arrays) in the per-event tables and the split files, and trained models as abstract representations (non-commercial use, citation of Krajewski et al.; `NOTICE.md`); never the events of either | Krajewski et al. 2018 [7] |
 | exiD (levelXdata) | non-commercial use; no redistribution | https://levelxdata.com/exid-dataset/ | by application | forbidden | forbidden | extraction code and event check sums, never the events | Moers et al. 2022 [8] |
 | CitySim (UCF SST Lab) | terms of the signed request form: non-commercial research and teaching, no redistribution | https://github.com/UCF-SST-Lab/UCF-SST-CitySim1-Dataset | by signed form, sent by e-mail | forbidden | forbidden (note 6) | code and check sums only | Zheng et al. [9] |
 | pNEUMA (EPFL) | ambiguous: CC BY-NC 4.0 or CC BY 4.0 (note 7) | https://open-traffic.epfl.ch/index.php/downloads/ | open: Zenodo, or the EPFL form with a terms tick-box | unclear | not published until EPFL clarifies | code and check sums only | Barmpounakis and Geroliminis 2020 [10] |
@@ -73,7 +73,9 @@ accelerations of a follower and its leader, i.e. trajectory data.
    Core 3`) has `Rights: public` and no licence. Section 4(a) of CC BY-SA 3.0 Unported allows
    distributing the work itself under that licence only; Section 4(b) allows distributing an
    adaptation under the same licence, a later version of it with the same licence elements, or a
-   compatible licence. TrafficLoop publishes no NGSIM table and no NGSIM events. The file that holds
+   compatible licence. TrafficLoop publishes no NGSIM trajectory table and no NGSIM events; the
+   per-event result tables and the split files hold identifiers of NGSIM vehicles and events with
+   sample counts, error sums and (calibration tables) fitted parameters, no series. The file that holds
    processed NGSIM trajectories (the selected and reconstructed NGSIM chains of
    `human_profiles.json`, `docs/protocols.md`) is shared as an adaptation under CC BY-SA 4.0 with
    the NGSIM attribution. The checkpoints trained on NGSIM-derived events alone are offered under
@@ -138,22 +140,30 @@ accelerations of a follower and its leader, i.e. trajectory data.
     trained on it or annotations that do not include its data, and do not allow it to be recovered
     (item 3); neither the dataset nor "any derivative work" is used for commercial purposes (item 4).
     Events extracted from highD and the FollowNet-highD events are modified versions and are never
-    published. Trained models and scores are published as abstract representations, for
-    non-commercial use, with the citation; that per-event scores are abstract representations is
-    our reading of item 3, not a statement of the terms.
+    published. For the FollowNet-highD events, trained models and scores (per event with the event
+    identifiers) are published as abstract representations, for non-commercial use, with the
+    citation; for raw highD only aggregate numbers are published, without identifiers. That per-event
+    scores are abstract representations is our reading of item 3, not a statement of the terms.
 
 ## What this means for a benchmark release
 
 - **A release has no single licence.** Data-derived files are published per source, each with the
   terms and the citation of its source: CC BY 4.0 for OpenACC (note 9), CC BY-SA 4.0 for the
-  adaptations of NGSIM (note 3), the statement of note 4 for TGSIM. Of highD, the Waymo pairs and
-  the FollowNet sets nothing is published but scores and trained models (notes 1, 2 and 10).
-  NGSIM's ShareAlike rules out merging NGSIM-derived data into a file under another licence.
-- **Human platoon windows (P2h).** `data/scenarios/human_profiles.json` merges NGSIM chains, TGSIM
-  chains and the two manual AstaZero runs; it is released as one file under CC BY-SA 4.0. NGSIM's
-  ShareAlike requires that for the NGSIM chains (note 3), CC BY 4.0 permits it for the AstaZero
-  runs, and the TGSIM chains were added under the public domain label that the records carried when
-  the tables were downloaded (note 4). The source of every window is in its `source` field.
+  adaptations of NGSIM (note 3), the statement of note 4 for TGSIM. Of the Waymo pairs and the
+  FollowNet sets no events, trajectories, series or samples are published; what is published are
+  scores, also per event with the identifiers of the events and of the followers (the per-event
+  tables, which also hold the fitted parameters of the calibrations, and the split files), and
+  trained models. Of raw highD only aggregate numbers are published, without identifiers (notes 1,
+  2 and 10).
+  NGSIM's ShareAlike rules out releasing NGSIM-derived data under another licence; a file that
+  collects windows of several sources is a collection in which every window keeps its own terms.
+- **Human platoon windows (P2h).** `data/scenarios/human_profiles.json` holds NGSIM chains, TGSIM
+  chains and the two manual AstaZero runs in one file; every window keeps the terms of its source,
+  named in its `source` field. The NGSIM chains are adaptations released under CC BY-SA 4.0, as
+  NGSIM's ShareAlike requires (note 3); the AstaZero runs are under CC BY 4.0, with credit and the
+  changes indicated; the TGSIM chains carry no licence of this repository: their records had the
+  public domain label when the tables were downloaded and state no licence since October 2026
+  (note 4).
 - **Credit and changes.** The CC BY and BY-SA sources require stating what was changed. The
   release notes describe the processing: extraction criteria, resampling to 10 Hz and
   reconstruction, with the config hash.

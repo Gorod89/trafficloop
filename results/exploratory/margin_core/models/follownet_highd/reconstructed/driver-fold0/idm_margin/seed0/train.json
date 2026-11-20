@@ -1,0 +1,52 @@
+{
+  "class": "idm",
+  "config_hash": "a866ca3f53a0",
+  "data_version": "reconstructed",
+  "dataset": "follownet_highd",
+  "exploratory": "decision REV4-1: not a reference entry, enters no ranking, test or leaderboard",
+  "family": "mechanistic",
+  "git_revision": "31967171f678409c62fe94c1e6f668b0559b3ce3",
+  "model": "idm_margin",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "driver",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0,
+      "n_events": 2503,
+      "n_samples": 297857,
+      "rmse_s": 5.864118938066732,
+      "rmse_v": 0.9660307982020658
+    },
+    "p0": {
+      "rmse_a": 2.3982436176688404,
+      "rmse_s": 0.023982410247638267,
+      "rmse_v": 0.2398242722891795
+    }
+  },
+  "training": {
+    "calibrated": false,
+    "kind": "pooled with stability margin 0.2, read from residual_idm_certified (config hash d3eb241a567d)",
+    "params": {
+      "T": 0.9776737689971924,
+      "a": 1.5572117567062378,
+      "b": 0.5009571313858032,
+      "s0": 2.7761666774749756,
+      "v0": 35.38421630859375
+    },
+    "scored_on": "cuda",
+    "seconds": 0.0,
+    "source": {
+      "config_hash": "d3eb241a567d",
+      "git_revision": "66988d732e10151b925f3d60d7ec08e6b475ef6d",
+      "kind": "pooled with stability margin",
+      "margin_min": 0.2020813548709138,
+      "run": "results/models/follownet_highd/reconstructed/driver-fold0/residual_idm_certified/seed0",
+      "stability_margin": 0.2
+    }
+  }
+}

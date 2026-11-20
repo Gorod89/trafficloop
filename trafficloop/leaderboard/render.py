@@ -17,11 +17,16 @@ from collections.abc import Callable, Mapping, Sequence
 import numpy as np
 import pandas as pd
 
-from trafficloop.leaderboard.tables import Board, summary_rows, transfer_means
+from trafficloop.leaderboard.tables import AUTHOR_ENTRIES, Board, summary_rows, transfer_means
 
 TITLE = "TrafficLoop leaderboard"
 MISSING = "n/a"
 Cell = Callable[[pd.Series], str]
+#: entries shown with the family "hybrid" (display only: their runs, ``train.json`` and the analysis keep "network")
+HYBRID_ENTRIES = ("residual_idm_certified", "pidl", "perl")
+HYBRID_FAMILY = "hybrid"
+#: mark after the name of an entry by the authors of the benchmark (:data:`AUTHOR_ENTRIES`)
+AUTHOR_MARK = "†"
 
 
 # ----------------------------------------------------------------------------- cells
@@ -71,6 +76,17 @@ def _text(value) -> str:
     return MISSING if value is None or (isinstance(value, float) and np.isnan(value)) else str(value)
 
 
+def model_cell(model) -> str:
+    """The entry's name, with :data:`AUTHOR_MARK` when it is an entry by the authors of the benchmark."""
+    text = _text(model)
+    return f"{text}{AUTHOR_MARK}" if isinstance(model, str) and model in AUTHOR_ENTRIES else text
+
+
+def family_cell(model, family) -> str:
+    """The family as displayed: "hybrid" for :data:`HYBRID_ENTRIES`, the recorded family otherwise."""
+    return HYBRID_FAMILY if isinstance(model, str) and model in HYBRID_ENTRIES else _text(family)
+
+
 def _ci(column: str) -> Cell:
     return lambda r: with_interval(r[column], r[f"{column}_low"], r[f"{column}_high"])
 
@@ -84,8 +100,8 @@ def _pair(a: str, b: str, pattern: str) -> Cell:
 
 #: main table: (first source column, header, cell); a display column is shown when its source column is
 MAIN_CELLS: list[tuple[str, str, Cell]] = [
-    ("model", "model", lambda r: _text(r["model"])),
-    ("family", "family", lambda r: _text(r["family"])),
+    ("model", "model", lambda r: model_cell(r["model"])),
+    ("family", "family", lambda r: family_cell(r.get("model"), r["family"])),
     ("p0_ratio", "P0 ratio [95% CI]", _ci("p0_ratio")),
     ("p1_h10_rmse_s", "P1 10 s RMSE_s (m) [95% CI]", _ci("p1_h10_rmse_s")),
     ("p1_h30_rmse_s", "P1 30 s RMSE_s (m) [95% CI]", _ci("p1_h30_rmse_s")),
@@ -107,8 +123,8 @@ MAIN_CELLS: list[tuple[str, str, Cell]] = [
     ("p1_whole_rmse_s_fold_min", "P1 whole fold spread (m)", lambda r: interval(r["p1_whole_rmse_s_fold_min"], r["p1_whole_rmse_s_fold_max"])),
 ]
 LEAK_CELLS: list[tuple[str, str, Cell]] = [
-    ("model", "model", lambda r: _text(r["model"])),
-    ("family", "family", lambda r: _text(r["family"])),
+    ("model", "model", lambda r: model_cell(r["model"])),
+    ("family", "family", lambda r: family_cell(r.get("model"), r["family"])),
     ("label", "label", lambda r: _text(r["label"])),
     ("run", "run", lambda r: _text(r["run"])),
     ("p0_rmse_a", "P0 RMSE_a (m/s^2) [95% CI]", _ci("p0_rmse_a")),
@@ -147,7 +163,7 @@ def transfer_display(board: Board) -> tuple[pd.DataFrame, list[str]]:
     rows = []
     for model, block in transfer.groupby("model", sort=False):
         by = block.set_index("tested_on")
-        row = {"model": model, "family": _text(block["family"].iloc[0])}
+        row = {"model": model_cell(model), "family": family_cell(model, block["family"].iloc[0])}
         for target in targets:
             row[f"-> {target}"] = with_interval(by.at[target, "ratio"], by.at[target, "low"], by.at[target, "high"]) if target in by.index else "-"
         row["mean"] = num(means.at[model, "mean_degradation"])
@@ -188,9 +204,19 @@ def main_caption(board: Board) -> str:
     if "p0_ratio_seed_min" in main:
         parts.append(" Seed spread: min-max over the training seeds.")
     if "p0_ratio_fold_min" in main:
-        parts.append(" Fold spread: min-max over the clean arms of the paired split (probe events; the P0 ratio against "
-                     "persistence on the same events).")
+        parts.append(" Fold spread: min-max over the folds of the driver split, each against persistence on the same fold "
+                     "(the clean arms of the paired split where an entry has no run on folds 1-4).")
     return "".join(parts)
+
+
+def author_note(board: Board) -> str:
+    """The entries of the benchmark's authors among the rows of the main table, a paragraph of its own
+    under the caption ('' when the table has none)."""
+    main = board.main
+    own = [m for m in AUTHOR_ENTRIES if "model" in main and m in set(main["model"])]
+    if not own:
+        return ""
+    return f"Entries by the authors of the benchmark (marked {AUTHOR_MARK}): " + "; ".join(f"`{m}`: {AUTHOR_ENTRIES[m]}" for m in own) + "."
 
 
 def plot_caption(board: Board) -> str:
@@ -238,7 +264,9 @@ def dataset_markdown(board: Board, level: int = 2, image: str | None = None, hea
     h, sub = "#" * level, "#" * (level + 1)
     text = f"{h} {board.dataset}\n\n" if heading else ""
     text += counts_text(board) + "\n\n"
-    text += f"{sub} Main table\n\n{main_caption(board)}\n\n{markdown_table(main_display(board))}"
+    note = author_note(board)
+    text += f"{sub} Main table\n\n{main_caption(board)}\n\n" + (f"{note}\n\n" if note else "")
+    text += markdown_table(main_display(board))
     if board.notes:
         text += "\nNotes:\n\n" + _bullets(board.notes)
     if image:
@@ -386,8 +414,9 @@ def html_section(board: Board, image: bytes | None = None) -> str:
     """The section of one dataset: main table, plot, driver-leak runs, transfer table, refused
     entries and provenance footer."""
     parts = [f'<section id="{_anchor(board.dataset)}">', f"<h2>{html.escape(board.dataset)}</h2>", f"<p>{_inline(counts_text(board))}</p>",
-             "<h3>Main table</h3>", f'<p class="caption">{_inline(main_caption(board))}</p>', html_table(main_display(board)),
-             _notes(board.notes)]
+             "<h3>Main table</h3>", f'<p class="caption">{_inline(main_caption(board))}</p>',
+             *([f'<p class="caption">{_inline(author_note(board))}</p>'] if author_note(board) else []),
+             html_table(main_display(board)), _notes(board.notes)]
     if image:
         data = base64.b64encode(image).decode("ascii")
         parts.append(f'<figure><img alt="Rank stability on {html.escape(board.dataset)}" src="data:image/png;base64,{data}">'

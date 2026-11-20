@@ -1,0 +1,7 @@
+dataset,p2_view,n_models,missing_p2,tau,p,top3_composite,p0_top3,h53_dropped_p0,whole_top3,h53_dropped_whole
+ngsim,in_range,25,,-0.5242077421859295,0.00024471295909431955,"newell_median, newell, idm_median","diffusion, persistence, mlp",3,"mlp_loop, gru_loop, lstm_loop",3
+ngsim,all,25,,-0.5618760521561469,8.645036508258378e-05,"ddpg, residual_idm_certified, newell","diffusion, persistence, mlp",3,"mlp_loop, gru_loop, lstm_loop",3
+follownet_highd,in_range,25,,-0.5302132836190792,0.00022065207158558682,"residual_idm_certified, ddpg, idm","persistence, mlp, mlp_loop",3,"gru_loop, seq2seq, mlp_loop",3
+follownet_highd,all,25,,-0.5284310490516143,0.0002224104853258595,"residual_idm_certified, ddpg, idm","persistence, mlp, mlp_loop",3,"gru_loop, seq2seq, mlp_loop",3
+highd,in_range,25,,-0.4983419219790906,0.0005345118678326554,"ddpg, gipps, idm","persistence, mlp, mlp_loop",3,"seq2seq, gail, gru",3
+highd,all,25,,-0.5167901625147987,0.0003166890919922838,"ddpg, idm, idm_median","persistence, mlp, mlp_loop",3,"seq2seq, gail, gru",3

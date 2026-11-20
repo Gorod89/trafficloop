@@ -1,0 +1,52 @@
+{
+  "class": "idm",
+  "config_hash": "97cf26e70ff8",
+  "data_version": "reconstructed",
+  "dataset": "ngsim",
+  "exploratory": "decision REV4-1: not a reference entry, enters no ranking, test or leaderboard",
+  "family": "mechanistic",
+  "git_revision": "31967171f678409c62fe94c1e6f668b0559b3ce3",
+  "model": "idm_margin",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "driver",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0,
+      "n_events": 2932,
+      "n_samples": 1299210,
+      "rmse_s": 6.366991682433454,
+      "rmse_v": 0.9310812385845233
+    },
+    "p0": {
+      "rmse_a": 3.0375808926485197,
+      "rmse_s": 0.030149631173344488,
+      "rmse_v": 0.30149632606915217
+    }
+  },
+  "training": {
+    "calibrated": false,
+    "kind": "pooled with stability margin 0.2, read from residual_idm_certified (config hash f9d29da298b8)",
+    "params": {
+      "T": 1.4735677242279053,
+      "a": 1.8509674072265625,
+      "b": 0.5136129856109619,
+      "s0": 2.7131149768829346,
+      "v0": 38.13591766357422
+    },
+    "scored_on": "cuda",
+    "seconds": 0.0,
+    "source": {
+      "config_hash": "f9d29da298b8",
+      "git_revision": "66988d732e10151b925f3d60d7ec08e6b475ef6d",
+      "kind": "pooled with stability margin",
+      "margin_min": 0.20018587558283618,
+      "run": "results/models/ngsim/reconstructed/driver-fold0/residual_idm_certified/seed0",
+      "stability_margin": 0.2
+    }
+  }
+}

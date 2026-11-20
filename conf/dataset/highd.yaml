@@ -1,7 +1,8 @@
 # highD (levelXdata, by application): drone trajectories on German highways, 25 Hz, leader = precedingId
 name: highd
 loader: highd
-raw_dir: data/raw/highd  # XX_tracks.csv, XX_tracksMeta.csv, XX_recordingMeta.csv (XX = 01..60)
+# shared read-only copy (60 recordings); nothing is written there and nothing derived from it is committed
+raw_dir: ../cf-stability/data/raw/highd/data  # XX_tracks.csv, XX_tracksMeta.csv, XX_recordingMeta.csv (XX = 01..60)
 position_source: track
 options:
   recordings: null  # recording ids; null: every recording on disk

@@ -1,4 +1,6 @@
-# Rebuild the leaderboard on every push and pull request; publish it with GitHub Pages on main.
+# Rebuild the leaderboard on every push and pull request as a check; publish the committed pages with GitHub Pages
+# on main. The committed pages are built with all per-event tables; the tables of the dataset highd are not
+# distributed (its terms), so a rebuild from the release assets has no intervals for that dataset.
 # Entries arrive as pull requests that add run directories under results/models/ (docs/hosting.md).
 name: leaderboard
 
@@ -34,9 +36,9 @@ jobs:
         run: |
           gh release download --repo "${{ github.repository }}" --pattern "per_event_tables.tar.gz" --dir /tmp/tables || echo "no release asset yet"
           if [ -f /tmp/tables/per_event_tables.tar.gz ]; then tar -xzf /tmp/tables/per_event_tables.tar.gz -C .; fi
-      - name: Rebuild the leaderboard (refused entries are listed, never ranked)
-        run: python scripts/make_leaderboard.py
-      - name: Pages artefact
+      - name: Rebuild the leaderboard as a check (refused entries are listed, never ranked)
+        run: python scripts/make_leaderboard.py out=/tmp/leaderboard_check
+      - name: Pages artefact (the committed pages)
         run: |
           mkdir -p site/leaderboard
           cp results/leaderboard/index.html site/leaderboard/index.html

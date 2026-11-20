@@ -1,0 +1,35 @@
+{
+  "class": "constant_speed",
+  "config_hash": "fd115bdcca19",
+  "data_version": "reconstructed",
+  "dataset": "highd",
+  "family": "baseline",
+  "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+  "model": "constant_speed",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "block",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.13563308506468053,
+      "n_events": 2551,
+      "n_samples": 420768,
+      "rmse_s": 43.21871299318773,
+      "rmse_v": 3.0190260157737794
+    },
+    "p0": {
+      "rmse_a": 0.3770028699421051,
+      "rmse_s": 0.0037700290317191788,
+      "rmse_v": 0.03770028705240851
+    }
+  },
+  "training": {
+    "n_train_events": 8210,
+    "n_train_windows": 1367897,
+    "n_val_windows": 315592
+  }
+}

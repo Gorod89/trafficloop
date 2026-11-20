@@ -1,0 +1,44 @@
+{
+  "class": "newell",
+  "config_hash": "55020584d5ba",
+  "data_version": "reconstructed",
+  "dataset": "highd",
+  "family": "mechanistic",
+  "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+  "model": "newell",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "block",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0027440219521756176,
+      "n_events": 2551,
+      "n_samples": 420768,
+      "rmse_s": 13.13203987221249,
+      "rmse_v": 2.20898284949246
+    },
+    "p0": {
+      "rmse_a": 5.430309738576244,
+      "rmse_s": 0.054303052023182245,
+      "rmse_v": 0.5430306465058538
+    }
+  },
+  "training": {
+    "collision_rate": 0.0035,
+    "kind": "pooled",
+    "n_events": 2000,
+    "objective": 0.5377161706196357,
+    "params": {
+      "V": 23.318744659423828,
+      "d": 11.6470947265625,
+      "tau": 0.3067331910133362
+    },
+    "rmse_s": 11.60786248137843,
+    "rmse_v": 2.1514507491618255,
+    "seconds": 49.0
+  }
+}

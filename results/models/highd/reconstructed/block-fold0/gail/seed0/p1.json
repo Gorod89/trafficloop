@@ -1,0 +1,81 @@
+{
+  "checklist": {
+    "closed_loop_horizon": "10 s, 30 s, whole event; warm-up 3 s",
+    "data_version": "reconstructed",
+    "mechanistic_calibration_protocol": "not a mechanistic model",
+    "reconstruction_method": "qp-semi-implicit-v1",
+    "seeds": {
+      "global": 0,
+      "split": 0,
+      "train": 0
+    },
+    "split_type": "block"
+  },
+  "config": {
+    "batch_windows": 4096,
+    "clip": [
+      -8.0,
+      4.0
+    ],
+    "fold": 0,
+    "horizons": [
+      10.0,
+      30.0
+    ],
+    "protocol": "p1",
+    "split": "block",
+    "version": "reconstructed",
+    "warmup": 30
+  },
+  "config_hash": "39750783d766",
+  "data_version": "reconstructed",
+  "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+  "model": {
+    "class": "gail",
+    "family": "network",
+    "label": "gail",
+    "provenance": {
+      "config_hash": "98427a277373",
+      "data_version": "reconstructed",
+      "dataset": "highd",
+      "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+      "seed": 0,
+      "split": {
+        "fold": 0,
+        "kind": "block",
+        "seed": 0
+      }
+    }
+  },
+  "protocol": "p1",
+  "seconds": 2.9,
+  "summary": {
+    "h10": {
+      "collision_rate": 0.0030257186081694403,
+      "event_collision_rate": 0.003920031360250882,
+      "horizon_s": 10.0,
+      "n_events": 2551,
+      "n_samples": 330500,
+      "n_windows": 3305,
+      "rmse_s": 2.9777862845060015,
+      "rmse_v": 0.687556774923236
+    },
+    "h30": {
+      "collision_rate": 0.017142857142857144,
+      "event_collision_rate": 0.01764705882352941,
+      "horizon_s": 30.0,
+      "n_events": 170,
+      "n_samples": 52500,
+      "n_windows": 175,
+      "rmse_s": 7.555898546324527,
+      "rmse_v": 0.7454431068495179
+    },
+    "whole": {
+      "collision_rate": 0.00431203449627597,
+      "n_events": 2551,
+      "n_samples": 420768,
+      "rmse_s": 6.013491433967859,
+      "rmse_v": 0.7895289623491031
+    }
+  }
+}

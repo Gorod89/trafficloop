@@ -13,7 +13,7 @@ Palettes (checked with the colour-vision validator of the data-viz guidelines, M
 * :data:`DATASET_COLORS`: the first six slots of the reference categorical palette in their fixed
   order (adjacent pairs pass: protan/deutan 9.1, normal vision 19.6); three of them are below 3:1
   against white, so dataset-coloured marks need direct labels. No report figure shows datasets and
-  families together.
+  families together. The seventh colour, a violet for raw highD, is outside that checked set.
 * :data:`HORIZON_GREYS`: an ordinal grey ramp (light to dark: one-step, 10 s, whole event), light
   end 2.1:1 against white, dark end light enough for black whiskers; no hue, so it never reads as a
   family.
@@ -49,15 +49,17 @@ FAMILY_COLORS = {"baseline": "#009E73", "mechanistic": "#D55E00", "network": "#0
 OTHER_COLOR = "#7f7f7f"
 
 #: canonical dataset order (trafficloop.experiments.analysis.TRANSFER_DATASETS)
-DATASET_ORDER = ("ngsim", "follownet_highd", "openacc", "waymo_hu", "follownet_ngsim", "tgsim")
-DATASET_COLORS = dict(zip(DATASET_ORDER, ("#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300")))
+DATASET_ORDER = ("ngsim", "follownet_highd", "openacc", "waymo_hu", "follownet_ngsim", "tgsim", "highd")
+DATASET_COLORS = dict(zip(DATASET_ORDER, ("#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#7e57c2")))
 DATASET_LABELS = {
     "ngsim": "NGSIM", "follownet_highd": "FollowNet highD", "openacc": "OpenACC",
     "waymo_hu": "Waymo (Hu et al.)", "follownet_ngsim": "FollowNet NGSIM", "tgsim": "TGSIM",
+    "highd": "highD (raw)",
 }
 DATASET_SHORT = {
     "ngsim": "NGSIM", "follownet_highd": "FN-highD", "openacc": "OpenACC",
     "waymo_hu": "Waymo-Hu", "follownet_ngsim": "FN-NGSIM", "tgsim": "TGSIM",
+    "highd": "highD",
 }
 
 HORIZON_GREYS = ("#b3b3b3", "#7a7a7a", "#474747")

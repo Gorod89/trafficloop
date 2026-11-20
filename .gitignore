@@ -24,3 +24,15 @@ logs/
 data/scenarios/
 # per-episode tables of P4 (16 MB over the runs; scripts/m3.py rebuilds them)
 results/**/p4.episodes.parquet
+
+# raw highD (levelXdata; no redistribution): only JSON summaries of the runs on `highd` are committed.
+# Per-event, per-window, per-profile and per-speed tables of these runs, and the transfer tables that other
+# runs write for the highD test part, stay on this machine (decision HD-1).
+results/models/highd/**/*.parquet
+results/models/**/p1_highd.*.parquet
+results/sweeps/highd/
+# the same rule for every other result tree (baseline tables of P0, whole-event tables): no table of `highd` is committed
+results/**/highd/**/*.parquet
+# exploratory result roots (decision REV4-1): JSON summaries and the comparison table are committed, the tables are
+# rebuilt by scripts/margin_core.py
+results/exploratory/**/*.parquet

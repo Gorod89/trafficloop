@@ -29,6 +29,9 @@ from trafficloop.figures import plots, style  # noqa: E402
 from trafficloop.utils import REPO_ROOT, read_json, resolve_path  # noqa: E402
 
 DEFAULTS = {"root": "results/models", "m4": "results/m4", "out": "results/figures", "p2_dataset": "ngsim"}
+#: datasets left out of the transfer heat map: the entries trained on raw highD were scored on two test parts only
+#: (decision HD-2), so their row and column would be incomplete; their ratios are in `results/m4/e4_transfer.csv`
+E4_PARTIAL = ("highd",)
 #: summary key of p1.json -> column of e3_rankings.csv
 P1_COLUMNS = {"h10": "p1_h10_rmse_s", "h30": "p1_h30_rmse_s", "whole": "p1_whole_rmse_s"}
 VEHICLE_COLUMNS = ["profile", "index", "std_v", "std_v_rec"]
@@ -142,6 +145,8 @@ def figure_jobs(args: dict) -> list[tuple[str, Callable | None, str]]:
     m4, root = args["m4"], args["root"]
     e1, e2 = read_csv(m4, "e1_ratios.csv"), read_csv(m4, "e2_paired.csv")
     e3, e4 = read_csv(m4, "e3_rankings.csv"), read_csv(m4, "e4_transfer.csv")
+    if e4 is not None:  # the heat map shows the datasets with a complete transfer matrix (see E4_PARTIAL)
+        e4 = e4[~e4["trained_on"].isin(E4_PARTIAL) & ~e4["tested_on"].isin(E4_PARTIAL)].reset_index(drop=True)
     pareto = read_csv(m4, "e3_pareto.csv")
     kendall = read_csv(m4, "e3_kendall.csv")
     e1b = read_csv(m4, "e1_horizons.csv")

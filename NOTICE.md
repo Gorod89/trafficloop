@@ -46,17 +46,43 @@ to the U.S. Department of Transportation, Federal Highway Administration, Next G
 Vehicle Trajectories and Supporting Data (ITS DataHub, doi:10.21949/1504477). Whether a trained model is an
 adaptation of the data in the sense of that licence is not decided here; the label meets its ShareAlike
 condition if it is.
+
+## Models trained on OpenACC-derived events
+
+The entries trained on `openacc` (every run under `results/models/openacc/` and their checkpoints in
+`checkpoints.tar.gz`) were trained on events derived from the Open ACC Database of the European Commission,
+Joint Research Centre (doi:10.2905/JRC.KMH3D00), which is licensed under CC BY 4.0 by the copyright notice
+that ships with its files (© European Union). These checkpoints are shared with credit to the source as that
+notice gives it; whether a trained model is an adaptation of the data is not decided here.
+
+## Models trained on TGSIM-derived events
+
+The entries trained on `tgsim` (every run under `results/models/tgsim/` and their checkpoints in
+`checkpoints.tar.gz`) were trained on events derived from TGSIM (U.S. Department of Transportation, Federal
+Highway Administration, ITS DataHub), whose portal records carried the U.S. public domain label when the
+tables were downloaded (September 2026) and state no licence since October 2026 (`docs/licences.md`, note 4).
+No licence of this repository is attached to these checkpoints beyond what the source permits, and whether a
+trained model is an adaptation of the data is not decided here; cite the data sets as their records recommend.
+
 ## Data that is not redistributed
 
 * highD and the FollowNet-highD events derived from it: the terms of highD forbid distributing the dataset
   or modified versions of it. No events, trajectories or samples of them are in the repository or in the
-  release assets; the
+  release assets; the per-event result tables and the split files hold the identifiers of the FollowNet-highD
+  events (row numbers of the FollowNet arrays) with sample counts, error sums and, in the calibration tables,
+  fitted parameters, no series. The
   events are rebuilt locally from the figshare files of the FollowNet release
   (`python scripts/download_data.py follownet --yes`, then
-  `python scripts/m1.py dataset=follownet_highd "steps=[build]"`).
+  `python scripts/m1.py dataset=follownet_highd "steps=[build]"`). Of the runs on the dataset `highd` (the
+  benchmark's own extraction of raw highD, used locally under its terms) the repository holds aggregate
+  numbers only (`results/models/highd/`, the leaderboard page): no event, split file, per-event table or
+  checkpoint of these runs is distributed, and the events can be rebuilt only from a copy of the dataset
+  obtained from its owner.
 * Waymo car-following pairs (Hu et al.) and events derived from them: the Waymo agreement allows distributing
-  the Dataset and modifications of it only to users registered at waymo.com/open, so none are in the
-  repository or in the release assets; the result tables hold scores only.
+  the Dataset and modifications of it only to users registered at waymo.com/open, so no pairs, events or
+  trajectories are in the repository or in the release assets. The per-event result tables and the split
+  files hold the identifiers of the pairs as given in the files of Hu et al. (segment number and local
+  vehicle number) with sample counts, error sums and, in the calibration tables, fitted parameters; the other result files hold aggregate scores.
 * kNN entries: the checkpoint of a kNN entry is a random sample of its training data, so no kNN
   checkpoint is in the release assets, for any dataset. The entries are rebuilt in seconds with
   `python scripts/train.py dataset=<name> model=knn` and reproduce their published scores.
@@ -64,9 +90,11 @@ condition if it is.
 ## Other sources
 
 * NGSIM (CC BY-SA 3.0 Unported on data.transportation.gov; its Section 4(b) allows adaptations under a later
-  version of the licence): the human platoon windows `human_profiles.json` contain reconstructed NGSIM chains
-  and are released under CC BY-SA 4.0 as a whole; the models trained on NGSIM-derived events, the FollowNet
-  NGSIM I-80 set included, carry the same attribution (section above).
+  version of the licence): the reconstructed NGSIM chains of the human platoon windows
+  `human_profiles.json` are adaptations released under CC BY-SA 4.0 with the NGSIM attribution; the other
+  windows of that file keep the terms of their sources (OpenACC and TGSIM, below; the source of every window
+  is in its `source` field); the models trained on NGSIM-derived events, the FollowNet NGSIM I-80 set
+  included, carry the same attribution (section above).
 * OpenACC (European Commission, Joint Research Centre, doi:10.2905/JRC.KMH3D00; © European Union, CC BY 4.0
   by the copyright notice that ships with the files): the leader profiles `openacc_profiles.json` and the two
   manually driven AstaZero windows of `human_profiles.json`, with the changes stated in `docs/data_layout.md`
@@ -74,7 +102,8 @@ condition if it is.
 * TGSIM (U.S. Department of Transportation, Federal Highway Administration, ITS DataHub): the near-miss
   episodes and the reconstructed TGSIM chains of `human_profiles.json`. The portal records carried the U.S.
   public domain label when the tables were downloaded (September 2026); since October 2026 they state no
-  licence (`docs/licences.md`, note 4). Cite the data sets as their records recommend.
+  licence (`docs/licences.md`, note 4); no licence of this repository is attached to these files. Cite the
+  data sets as their records recommend.
 * FollowNet event sets (Chen et al., CC0 label on figshare): read from the figshare release; the NGSIM I-80
   set inherits NGSIM's ShareAlike terms and the HighD sets the terms of highD, as above.
 

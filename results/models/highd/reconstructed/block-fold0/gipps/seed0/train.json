@@ -1,0 +1,47 @@
+{
+  "class": "gipps",
+  "config_hash": "3ec3f09614ea",
+  "data_version": "reconstructed",
+  "dataset": "highd",
+  "family": "mechanistic",
+  "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+  "model": "gipps",
+  "n_parameters": 0,
+  "seed": 0,
+  "split": {
+    "fold": 0,
+    "kind": "block",
+    "seed": 0
+  },
+  "test": {
+    "closed_loop_whole_event": {
+      "collision_rate": 0.0003920031360250882,
+      "n_events": 2551,
+      "n_samples": 420768,
+      "rmse_s": 6.474142027901905,
+      "rmse_v": 0.828359611622076
+    },
+    "p0": {
+      "rmse_a": 4.337264320479277,
+      "rmse_s": 0.043372623421888676,
+      "rmse_v": 0.43372627414705456
+    }
+  },
+  "training": {
+    "collision_rate": 0.0,
+    "kind": "pooled",
+    "n_events": 2000,
+    "objective": 0.24597424452783861,
+    "params": {
+      "V": 25.171985626220703,
+      "a": 1.1024761199951172,
+      "b": 0.5355010032653809,
+      "b_hat": 0.5066056847572327,
+      "s0": 2.6722469329833984,
+      "tau": 1.4632549285888672
+    },
+    "rmse_s": 6.049018113118239,
+    "rmse_v": 0.818170673422167,
+    "seconds": 90.9
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "checklist": {
+    "closed_loop_horizon": "10 s, 30 s, whole event; warm-up 3 s",
+    "data_version": "reconstructed",
+    "mechanistic_calibration_protocol": "not a mechanistic model",
+    "reconstruction_method": "qp-semi-implicit-v1",
+    "seeds": {
+      "global": 0,
+      "split": 0,
+      "train": 0
+    },
+    "split_type": "block"
+  },
+  "config": {
+    "batch_windows": 4096,
+    "clip": [
+      -8.0,
+      4.0
+    ],
+    "fold": 0,
+    "horizons": [
+      10.0,
+      30.0
+    ],
+    "protocol": "p1",
+    "split": "block",
+    "version": "reconstructed",
+    "warmup": 30
+  },
+  "config_hash": "39750783d766",
+  "data_version": "reconstructed",
+  "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+  "model": {
+    "class": "knn",
+    "family": "network",
+    "label": "knn",
+    "provenance": {
+      "config_hash": "410e38ce3506",
+      "data_version": "reconstructed",
+      "dataset": "highd",
+      "git_revision": "10430cbf33f1076c6fc310420d240c198a0e0282",
+      "seed": 0,
+      "split": {
+        "fold": 0,
+        "kind": "block",
+        "seed": 0
+      }
+    }
+  },
+  "protocol": "p1",
+  "seconds": 14.1,
+  "summary": {
+    "h10": {
+      "collision_rate": 0.009379727685325264,
+      "event_collision_rate": 0.012152097216777734,
+      "horizon_s": 10.0,
+      "n_events": 2551,
+      "n_samples": 330500,
+      "n_windows": 3305,
+      "rmse_s": 3.2569860106863566,
+      "rmse_v": 0.7623432552871462
+    },
+    "h30": {
+      "collision_rate": 0.09714285714285714,
+      "event_collision_rate": 0.1,
+      "horizon_s": 30.0,
+      "n_events": 170,
+      "n_samples": 52500,
+      "n_windows": 175,
+      "rmse_s": 10.00434241044506,
+      "rmse_v": 0.9511066505443965
+    },
+    "whole": {
+      "collision_rate": 0.01803214425715406,
+      "n_events": 2551,
+      "n_samples": 420768,
+      "rmse_s": 7.512300954907805,
+      "rmse_v": 0.8939662320492496
+    }
+  }
+}

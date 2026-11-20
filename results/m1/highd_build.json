@@ -1,0 +1,80 @@
+{
+  "config_hash": "1782a5d3a232",
+  "dataset": "highd",
+  "events_per_follower": {
+    "max": 2,
+    "mean": 1.0053161945568516,
+    "share_events_of_followers_with_several_events": 0.010576164167324388,
+    "share_followers_with_several_events": 0.005316194556851543
+  },
+  "n_failed_reconstruction": 0,
+  "near_miss": {
+    "duration_max_s": 15.0,
+    "duration_median_s": 10.600000000000001,
+    "duration_min_s": 6.0,
+    "duration_total_s": 32531.399999999998,
+    "min_ttc_quantiles": {
+      "0.05": 1.1137777903387425,
+      "0.5": 10.8808274158687
+    },
+    "n_events": 3159,
+    "n_followers": 3149,
+    "n_samples": 328473,
+    "n_sites": 6,
+    "triggers": {
+      "brake": 21,
+      "cut_in": 3013,
+      "drac": 16,
+      "ttc": 133
+    },
+    "with_cut_in": 3029
+  },
+  "raw": {
+    "duration_max_s": 85.9,
+    "duration_median_s": 16.1,
+    "duration_min_s": 14.9,
+    "duration_total_s": 248656.80000000002,
+    "n_events": 12670,
+    "n_followers": 12603,
+    "n_samples": 2499238,
+    "n_sites": 6
+  },
+  "reconstructed": {
+    "duration_max_s": 85.9,
+    "duration_median_s": 16.1,
+    "duration_min_s": 14.9,
+    "duration_total_s": 248656.80000000002,
+    "n_events": 12670,
+    "n_followers": 12603,
+    "n_samples": 2499238,
+    "n_sites": 6
+  },
+  "reconstruction": {
+    "mean_outlier_share": 0.0006735577388818912,
+    "median_rms_acc_change": 0.02308085086016104,
+    "median_rms_gap_change": 0.03609276111257205,
+    "median_rms_speed_change": 0.01678321944614536,
+    "method": "qp-semi-implicit-v1",
+    "n_events": 12670,
+    "q99_max_abs_acc": 2.661996276886098,
+    "q99_max_abs_acc_raw": 2.56,
+    "q99_max_abs_jerk": 1.7837057551140827,
+    "q99_max_abs_jerk_raw": 1.3500000000007106,
+    "share_gap_bound_active": 0.0,
+    "share_solved_inaccurate": 0.0
+  },
+  "regimes": {
+    "congested": 6416,
+    "free": 996,
+    "steady": 5258
+  },
+  "seconds": 362.5,
+  "sites": {
+    "1": 11317,
+    "2": 240,
+    "3": 145,
+    "4": 74,
+    "5": 747,
+    "6": 147
+  }
+}

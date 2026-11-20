@@ -46,7 +46,7 @@ authors' documentation.
 
 Legend of the marks:
 
-- **[file]** verified on the real file in this session.
+- **[file]** verified on the real file.
 - **[file, range]** verified on the real file by the HTTP range reads of the reconnaissance
   (`data_sources.md`); the file is not on disk here.
 - **[notebook]** verified in the authors' Colab notebook "Dataset_description_FollowNet"
@@ -318,7 +318,7 @@ metadata and documentation as collected by the reconnaissance (`data_sources.md`
 
 Legend of the marks:
 
-- **[file]** verified on the real file in this session.
+- **[file]** verified on the real file.
 - **[metadata]** verified in the Socrata view metadata or data-set description (NGSIM, TGSIM).
 - **[header]** verified on the first bytes of the real file (HTTP range read of the reconnaissance).
 - **[doc]** from the format documentation of the authors (highD and exiD format PDFs, CitySim

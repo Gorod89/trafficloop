@@ -96,6 +96,21 @@ The report of the script (and `notes` of the splits) states per fold `n_probe`, 
   unstable fraction unchanged) next to the ACC-referenced ones, Kendall's tau-b between the
   rankings and the first three models of every composite (point estimates;
   `trafficloop/experiments/human_reference.py`).
+* **E3f** (exploratory, added 2026-11-16): whether the correlation between the one-step ranking and
+  the composite is produced by the construction of the composite. Per dataset, from the saved results: tau under
+  five treatments of the missing inputs and of the baselines (the published rule; the 23 entries without the
+  baselines; every entry scored on the inputs it has; both; the entries with all four inputs), with the bootstrap
+  interval, median and the share of replicates below the point estimate; a collision gate with thresholds 0 and
+  0.01; the collision input replaced by the followers at or behind the first collision or by the profiles with a
+  collision (decision REV2-1); the unstable fraction recomputed with a tolerance of 1e-3 or with neutral stability
+  counted as instability (decision REV3-3); leave one entry out; leave one of the four inputs out; the three seeds and five
+  folds of the main datasets; and the registered rules of H5.1 and H5.3
+  (`trafficloop/experiments/robustness.py`, `results/m4/e3f_*.csv`, decision REV1-2).
+* **E3g** (exploratory, added 2026-11-16): the entries grouped by what they are fitted to (closed-loop
+  calibration, one-step loss, rollout or multi-step loss, policy, certified hybrid, baselines): median rank of
+  every group under P0 and under the composite, and tau(P0, composite) inside the groups, with Holm-adjusted
+  p-values over the six datasets (decision REV3-2)
+  (`trafficloop/experiments/within_family.py`, `results/m4/e3_objective_*.csv`, decision REV2-2).
 * **E4 (P5)**: the transfer matrices of the reference entries with `p1_<other>.json` files
   (`MODELS` of `scripts/m2.py`, all 25; whole event and 10 s): relative degradation
   `rmse_s(A -> B) / rmse_s(B -> B)` with driver-bootstrap intervals, the mean degradation per
@@ -182,3 +197,12 @@ Every validated run directory holds `sweep.json` (the criteria, their settings a
 the configuration hash of the checkpoint), recomputed when the checkpoint or the settings
 change. Further hydra overrides of every run may be appended (`train.optim.epochs=1 ...` for a
 smoke test, with `root=` pointing elsewhere); overrides of the keys the sweep sets are refused.
+
+## 5. Registered and exploratory analyses
+
+The plan registered four hypotheses with thresholds (H5.1 to H5.4). The tests of these four on the datasets of the
+registered round (NGSIM and FollowNet-highD; NGSIM and OpenACC for H5.2) are confirmatory; their verdicts by the
+registered criteria are in decision REV1-3 and in section E3f of the M4 report. Everything else was added after those
+results and is exploratory: the four further datasets in E1 and E3, E1b, E3b to E3g, E5, the protocols `p1s` and `p2h`
+and the entry `residual_idm_certified` (decisions R8, R9, REV1-1 to REV1-4, REV2-1 to REV2-4). FollowNet-highD
+stands for the registered highD (decision D12).
